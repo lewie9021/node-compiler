@@ -1,0 +1,25 @@
+{
+    "name": "node-compiler",
+    "description": "Single page application compiler that supports Dust, JS, Sass, and sync.",
+    "author": {
+        "name": "Lewis Barnes"
+    },
+    "version": "0.0.3",
+    "license": "MIT",
+    "main": "lib/Compiler.js",
+    "repository": {
+        "type" : "git",
+        "url": "https://github.com/lewie9021/node-compiler"
+    },
+    "dependencies": {
+        "dustjs-linkedin": "2.5.x",
+        "fs-extra": "0.12.x",
+        "node-sass": "1.2.x",
+        "uglify-js": "2.4.x",
+        "chalk": "0.5.x",
+        "chokidar": "0.11.x"
+    },
+    "engines": {
+        "node": "0.10.x"
+    }
+}
