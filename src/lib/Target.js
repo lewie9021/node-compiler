@@ -188,14 +188,14 @@ Target.prototype.compile = function _compile(startup) {
             var cachePath = Helpers.getCachePath(this, this.directory);
             if (FS.existsSync(cachePath)) {
                 FS.unlinkSync(cachePath);
-                Logger.info("Removed " + path + " from cache.");
+                Logger.debug("Removed " + path + " from cache.");
             }
 
             if (!this.profile.concatenate) {
                 var outputPath = Path.join(this.profile.output, Path.relative(this.directory, path));
                 if (FS.existsSync(outputPath)) {
                     FS.unlinkSync(outputPath);
-                    Logger.info("Removed " + path + " from output.");
+                    Logger.debug("Removed " + path + " from output.");
                 }
             }
         }, this);
@@ -215,7 +215,7 @@ Target.prototype.compile = function _compile(startup) {
     * files [array]       - An array passed in via the use of the diveSync helper.
     * startup [boolean]   - This parameter is only true when the compiler is first launched otherwise it's falsy.
     * appendPath [string] - An optional parameter that contains a path which the files will be appended to.
-  * @returns: If appendPath is present, a concatinated string of all the files passed otherwise an empty string.
+  * @returns: If appendPath is present, a concatenated string of all the files passed otherwise an empty string.
 \* ------------------------------------------------------------------------------------------------------------------ */
 Target.prototype.processFiles = function _processFiles(files, startup, appendPath) {
     var data = "";
@@ -240,8 +240,6 @@ Target.prototype.processFiles = function _processFiles(files, startup, appendPat
                 FS.mkdirsSync(Path.dirname(filePath));
                 FS.writeFileSync(filePath, contents);
             }
-        } else {
-            return "";
         }
     }
     

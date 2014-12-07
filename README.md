@@ -148,7 +148,7 @@ The configuration object above may seem daunting however, broken down, it's rath
 
 ### Future Improvements
 
-* Creation of a GUI to make creating the configuration object much more user friendly.
+* A GUI to make creating the configuration object much more user friendly.
 * Better logging implementation.
 * CoffeeScript intergration.
 * Make use of event emitters for on startup, files changes, and when compliations are finished.
@@ -163,6 +163,8 @@ The configuration object above may seem daunting however, broken down, it's rath
             <li>Fixed some typos within the README.</li>
             <li>Fixed a bug with the Dust plugin. If the relativePath option was specified the template name would contain the file extension.</li>
             <li>Added a log message when a compile is finished.</li>
+            <li>Fixed a bug with the Target class using concatenation. Sass partials would return no content as they're ignored. This caused the compiler to drop the accumulated code resulting in missing code in the output file.</li>
+            <li>Modifed a couple of logs within Target that were logging as info rather than debug.</li>
         </ul>
     </dd>
 </dl>
