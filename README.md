@@ -123,13 +123,12 @@ The example above requires the module and instantiates it with a path to the con
 The configuration object above may seem daunting however, broken down, it's rather simple:
 
 * The base directory is **C:\Development\MyProject**.
-* I've defined a mode **dev**, that will compile the profiles: **app**, **templates**, and **styling**.
+* I've defined a mode **dev**, that will compile the profiles: **js**, **templates**, and **styling**.
 * I've declared how I want the profiles to behave found within the profiles array (note: Their IDs match up with the mode profiles I specifed to enable correct linking).
 * In this example project, I have a common folder 'Core' that has all my base code I use for making most of my single page applications and a project specify folder labled 'MyApp'.
 * The output of all the profiles are paths to files. These can either be a **file** or a **directory** (note: this directory is relative to the directory specified at the root). If a directory is specified, files will be compiled and placed in the directory with a relative path to the source directory. A file output will mean all the compiled code will be concatenated together.
 * The targets contain the directory to compile (note: this directory is relative to the directory specified at the root).
 * The plugin section of the targets configure how the files to be compiled. The Intergrations section of this README will give you a list of the currently supported plugins. Options can be specified to tweak the behaviour of the plugin and may vary between plugins.
-* The optional **ignore** property for targets can be specified that is an array of paths to ignore. In this example I want to ignore the file at **C:\\Development\\MyProject\\Core\\js\\fileA.js**
 
 ### Intergrations
 
