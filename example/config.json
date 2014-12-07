@@ -1,0 +1,98 @@
+{
+    "name": "My Project",
+    "directory": "C:\\Development\\MyProject",
+    "modes": [
+        {
+            "id": "dev",
+            "name": "Development",
+            "profiles": ["js", "templates", "styling"]
+        }
+    ],
+    "profiles": [
+        {
+            "id": "js",
+            "name": "JavaScript",
+            "output": "MyApp\\public\\app.js",
+            "targets": [
+                {
+                    "directory": "Core\\js",
+                    "watch": true,
+                    "plugin": {
+                        "name": "JS",
+                        "options": {
+                            "minify": false,
+                            "paths": true
+                        }
+                    }
+                },
+                {
+                    "directory": "MyApp\\src\\js",
+                    "watch": true,
+                    "plugin": {
+                        "name": "JS",
+                        "options": {
+                            "minify": false,
+                            "paths": true
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": "templates",
+            "name": "Dust Templates",
+            "output": "MyApp\\public\\dust.js",
+            "targets": [
+                {
+                    "directory": "Core\\dust",
+                    "watch": true,
+                    "plugin": {
+                        "name": "Dust",
+                        "options": {
+                            "relativePath": true,
+                            "paths": true
+                        }
+                    }
+                },
+                {
+                    "directory": "MyApp\\src\\dust",
+                    "watch": true,
+                    "plugin": {
+                        "name": "Dust",
+                        "options": {
+                            "relativePath": true,
+                            "paths": true
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": "styling",
+            "name": "Sass Stylesheets",
+            "output": "MyApp\\public\\theme.css",
+            "targets": [
+                {
+                    "directory": "Core\\sass",
+                    "watch": true,
+                    "plugin": {
+                        "name": "Sass",
+                        "options": {
+                            "paths": true
+                        }
+                    }
+                },
+                {
+                    "directory": "MyApp\\src\\sass",
+                    "watch": true,
+                    "plugin": {
+                        "name": "Sass",
+                        "options": {
+                            "paths": true
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

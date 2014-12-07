@@ -71,6 +71,8 @@ Compiler.prototype.init = function(config) {
         if (!profile) { return Logger.warn("Invalid profile ID specified '" + profileID + "'."); }
         this.profiles.push(new Profile(this, profile));
     }, this);
+
+    Logger.info("Compile complete.");
 };
 
 module.exports = Compiler;

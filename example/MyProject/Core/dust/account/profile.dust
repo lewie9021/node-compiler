@@ -1,0 +1,5 @@
+{#user}
+	<div>Name: {name}</div>
+	<div>Age: {age}</div>
+	<div>Last Active: {lastActive}</div>
+{/user}

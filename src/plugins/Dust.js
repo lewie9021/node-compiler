@@ -52,7 +52,7 @@ Dust.prototype.compile = function _compile(path, stat, startup) {
     if (!cache) {
         try {
             var relativePath = Path.relative(this.target.directory, path);
-            var templateName = options.relativePath ? relativePath.replace(/\\/g, "-") : Path.basename(path, ".dust");
+            var templateName = options.relativePath ? relativePath.replace(/\\/g, "-").replace(/\.dust$/i, "") : Path.basename(path, ".dust");
 
             contents = DustJS.compile(FS.readFileSync(path, "utf-8"), templateName);
             if (options.paths) { contents = (("// " + path + "\n") + contents); }

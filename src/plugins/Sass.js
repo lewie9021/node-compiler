@@ -68,6 +68,7 @@ Sass.prototype.onMonitor = function(reason, path, stat) {
     }
 
     this.target.profile.compile();
+    Logger.info("Compile complete.");
 };
 
 /* ------------------------------------------------------------------------------------------------------------------ *\

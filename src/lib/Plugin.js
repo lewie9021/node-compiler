@@ -48,6 +48,7 @@ Plugin.prototype.onMonitor = function(reason, path, stat) {
 
     Logger.info("File " + reason + ": " + path);
     this.target.profile.compile();
+    Logger.info("Compile complete.");
 };
 
 /* ------------------------------------------------------------------------------------------------------------------ *\

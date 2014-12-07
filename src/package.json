@@ -4,13 +4,14 @@
     "author": {
         "name": "Lewis Barnes"
     },
-    "version": "0.0.3",
+    "version": "0.0.5",
     "license": "MIT",
-    "main": "lib/Compiler.js",
+    "main": "./lib/Compiler.js",
     "repository": {
         "type" : "git",
         "url": "https://github.com/lewie9021/node-compiler"
     },
+    "bin": "./bin/cli.js",
     "dependencies": {
         "dustjs-linkedin": "2.5.x",
         "fs-extra": "0.12.x",

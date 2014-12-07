@@ -27,14 +27,14 @@ The example above requires the module and instantiates it with a path to the con
         {
             "id": "dev",
             "name": "Development",
-            "profiles": ["app", "templates", "styling"]
+            "profiles": ["js", "templates", "styling"]
         }
     ],
     "profiles": [
         {
-            "id": "app",
-            "name": "Application JavaScript",
-            "output": "myApp\\public\\app.js",
+            "id": "js",
+            "name": "JavaScript",
+            "output": "MyApp\\public\\app.js",
             "targets": [
                 {
                     "directory": "Core\\js",
@@ -45,13 +45,10 @@ The example above requires the module and instantiates it with a path to the con
                             "minify": false,
                             "paths": true
                         }
-                    },
-                    "ignore": [
-                        "fileA.js"
-                    ]
+                    }
                 },
                 {
-                    "directory": "MyApp\\js",
+                    "directory": "MyApp\\src\\js",
                     "watch": true,
                     "plugin": {
                         "name": "JS",
@@ -66,21 +63,21 @@ The example above requires the module and instantiates it with a path to the con
         {
             "id": "templates",
             "name": "Dust Templates",
-            "output": "myApp\\public\\dust.js",
+            "output": "MyApp\\public\\dust.js",
             "targets": [
                 {
                     "directory": "Core\\dust",
                     "watch": true,
                     "plugin": {
-                        "name": "JS",
+                        "name": "Dust",
                         "options": {
-                            "minify": false,
+                            "relativePath": true,
                             "paths": true
                         }
                     }
                 },
                 {
-                    "directory": "MyApp\\dust",
+                    "directory": "MyApp\\src\\dust",
                     "watch": true,
                     "plugin": {
                         "name": "Dust",
@@ -95,7 +92,7 @@ The example above requires the module and instantiates it with a path to the con
         {
             "id": "styling",
             "name": "Sass Stylesheets",
-            "output": "myApp\\public\\theme.css",
+            "output": "MyApp\\public\\theme.css",
             "targets": [
                 {
                     "directory": "Core\\sass",
@@ -108,7 +105,7 @@ The example above requires the module and instantiates it with a path to the con
                     }
                 },
                 {
-                    "directory": "MyApp\\sass",
+                    "directory": "MyApp\\src\\sass",
                     "watch": true,
                     "plugin": {
                         "name": "Sass",
@@ -155,6 +152,21 @@ The configuration object above may seem daunting however, broken down, it's rath
 * Creation of a GUI to make creating the configuration object much more user friendly.
 * Better logging implementation.
 * CoffeeScript intergration.
+* Make use of event emitters for on startup, files changes, and when compliations are finished.
+
+### Changelog
+<dl>
+    <dt>v0.0.5</dt>
+    <dd>
+        <ul>
+            <li>Added support for the command line.</li>
+            <li>Added an example (based on the README scenario) to showcase the compiler.</li>
+            <li>Fixed some typos within the README.</li>
+            <li>Fixed a bug with the Dust plugin. If the relativePath option was specified the template name would contain the file extension.</li>
+            <li>Added a log message when a compile is finished.</li>
+        </ul>
+    </dd>
+</dl>
 
 ### Licence
 Copyright (c) 2014 Lewis Barnes. See LICENSE for details.

@@ -1,0 +1,7 @@
+p, span {
+	&.text-bold {
+		font-weight: bold;
+	}
+}
+
+@import "partial";
