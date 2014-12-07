@@ -41,7 +41,7 @@ function Profile(compiler, profile) {
   * @parameters:
     * startup [boolean]: This parameter is only true when the compiler is first launched otherwise it's falsy.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Profile.prototype.compile = function(startup) {
+Profile.prototype.compile = function _compile(startup) {
     if (FS.existsSync(this.output)) {
         if (!FS.statSync(this.output).isDirectory()) {
             Logger.debug("Removing old output file.");

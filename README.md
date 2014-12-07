@@ -132,6 +132,7 @@ The configuration object above may seem daunting however, broken down, it's rath
 
 ### Intergrations
 
+* Sync
 * Dust
     * relativePath
     * paths
@@ -143,18 +144,25 @@ The configuration object above may seem daunting however, broken down, it's rath
 * JS
     * minify
     * paths
-* Sync
-* CoffeeScript (WIP)
+* CoffeeScript
+    * header
+    * bare
+    * paths
 
 ### Future Improvements
 
 * A GUI to make creating the configuration object much more user friendly.
 * Better logging implementation.
-* CoffeeScript intergration.
 * Make use of event emitters for on startup, files changes, and when compliations are finished.
 
 ### Changelog
 <dl>
+    <dt>v0.0.6</dt>
+    <dd>
+        <ul>
+            <li>Added support for CoffeeScript</li>
+        </ul>
+    </dd>
     <dt>v0.0.5</dt>
     <dd>
         <ul>

@@ -48,7 +48,7 @@ Sass.prototype.constructor = Sass;
   * @todo:
     * Only don't remove css files from cache. They wouldn't support the @import functionality.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Sass.prototype.onMonitor = function(reason, path, stat) {
+Sass.prototype.onMonitor = function _onMonitor(reason, path, stat) {
     var filePattern = this.filePattern;
     if ((stat && stat.isDirectory()) || (filePattern && !filePattern.test(path))) { return; }
 
@@ -82,7 +82,7 @@ Sass.prototype.onMonitor = function(reason, path, stat) {
   * @returns: The contents of the compiled file will be returned unless an error occurs. If this is the case null will
               instead be returned.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Sass.prototype.compile = function(path, stat, startup) {
+Sass.prototype.compile = function _compile(path, stat, startup) {
     if (Path.basename(path)[0] == "_") { return ""; }   
 
     var cache = Helpers.getCache(this.target, path);

@@ -47,7 +47,7 @@ function Target(profile, target, id) {
                   prevent the Target from acting strangly and potentially throwing errors. If the checks pass, the
                   plugin will be instantiated and if set, the directory specified will be watched.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Target.prototype.init = function() {
+Target.prototype.init = function _init() {
     if (!this.plugin) {
         return Logger.warn("Target plugin for profile '" + this.profile.name + "' ('" + this.directory + "') required.");
     }
@@ -74,7 +74,7 @@ Target.prototype.init = function() {
   * @description: This method helps bind the context of 'this' much easier than during the delcariation of an object.
                   It is executed for each file/folder within the directory it is watching.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Target.prototype.filter = function(f, stat) {
+Target.prototype.filter = function _filter(f, stat) {
     if (stat && stat.isDirectory()) { return true; }
 
     // Check it matches the file path of the plugin.
@@ -92,7 +92,7 @@ Target.prototype.filter = function(f, stat) {
                   Chokidar module, filtered files within the specified Target directory will be watched for creation,
                   deletion, or modification. If the module emmits any of these events a recompile will be made.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Target.prototype.watchDirectory = function() {
+Target.prototype.watchDirectory = function _watchDirectory() {
     var self = this;
     var watcher = Chokidar.watch(this.directory, {
         ignored: !this.filter.bind(this),
@@ -116,7 +116,7 @@ Target.prototype.watchDirectory = function() {
   * @todo:
     * Remove the need to filter the base class (it's now Plugin and in a different directory).
 \* ------------------------------------------------------------------------------------------------------------------ */
-Target.prototype.getInstalledPlugins = function() {
+Target.prototype.getInstalledPlugins = function _getInstalledPlugins() {
     var plugins = [];
 
     FS.readdirSync(Path.join(__dirname, "../plugins")).forEach(function(plugin) {

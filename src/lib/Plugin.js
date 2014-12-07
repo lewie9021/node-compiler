@@ -41,7 +41,7 @@ function Plugin(target, plugin) {
     * path [string]   - The absolute path of the file that have been created, changed, or deleted.
     * stat [object]   - The stat object of the created, changed or deleted file.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Plugin.prototype.onMonitor = function(reason, path, stat) {
+Plugin.prototype.onMonitor = function _onMonitor(reason, path, stat) {
     var filePattern = this.filePattern;
     if (stat && stat.isDirectory()) { return; }
     if (filePattern && !filePattern.test(path)) { return; }
@@ -63,7 +63,7 @@ Plugin.prototype.onMonitor = function(reason, path, stat) {
       It often incorrectly parses them truncating some of the message. Another solution would be to send a pull
       request such intergrations to throw more standardised errors.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Plugin.prototype.error = function(path, e) {
+Plugin.prototype.error = function _error(path, e) {
     Logger.error("Error compiling via " + this.name + " Plugin:");
     Logger.error("- Message: " + e.message);
     Logger.error("- File: " + path);

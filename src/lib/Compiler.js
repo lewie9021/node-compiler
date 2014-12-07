@@ -52,7 +52,7 @@ function Compiler(config, mode, debug) {
     * config [object] - This parameter is passed in via the constructor and provides access to important properties
                         that either require referencing or further processing.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Compiler.prototype.init = function(config) {
+Compiler.prototype.init = function _init(config) {
     Logger.silent("------------ Starting Compiler ------------");
     Logger.debug("Initialising " + this.mode.name + " mode...");
 
