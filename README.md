@@ -14,7 +14,13 @@ npm install node-compiler
 var Compiler = require("node-compiler");
 var Path = require("path");
 
-var compiler = new Compiler(Path.join(__dirname, "config.json"), "dev");
+var config = Path.join(__dirname, "config.json");
+var compiler = new Compiler(config, "dev");
+
+compiler.on("compiled", function() { console.log("Compiled"); });
+compiler.on("changed", function() { console.log("Changed"); });
+
+compiler.compile();
 ```
 
 The example above requires the module and instantiates it with a path to the configuration file (note: this can instead be an object literal) followed by the mode you wish to use which in this case is development. You can optionally run the compiler in debug mode by specifying an additional parameter of true. For the above example to work however, a configuration file will need to be created:
