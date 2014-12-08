@@ -20,28 +20,26 @@ var FS = require("fs-extra")
 \* ------------------------------------------------------------------------------------------------------------------ */
 
 function Profile(compiler, profile) {
+    this.compiler = compiler;
     this.id = profile.id;
     this.name = profile.name;
     this.output = Path.join(compiler.directory, profile.output);
     this.concatenate = (Path.extname(this.output).length > 0);
-    this.compiler = compiler;
 
     Logger.set("debugging", this.compiler.debug);
 
     this.targets = profile.targets.map(function(target, id) {
         return new Target(this, target, id);
     }, this);
-
-    this.compile(true);
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: This method loops through each target and compiles them. Depending on the output specified, files
                   may be concatinated or saved individually.
   * @parameters:
-    * startup [boolean]: This parameter is only true when the compiler is first launched otherwise it's falsy.
+    * manualCompile [boolean]: Only true when the compiler is manually compiled otherwise it's falsy.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Profile.prototype.compile = function _compile(startup) {
+Profile.prototype.compile = function _compile(manualCompile) {
     if (FS.existsSync(this.output)) {
         if (!FS.statSync(this.output).isDirectory()) {
             Logger.debug("Removing old output file.");
@@ -52,7 +50,7 @@ Profile.prototype.compile = function _compile(startup) {
     }
 
     Logger.debug("Compiling Targets for Profile '" + this.name + "'.");
-    this.targets.forEach(function(target) { target.compile(startup); });
+    this.targets.forEach(function(target) { target.compile(manualCompile); });
 };
 
 module.exports = Profile;

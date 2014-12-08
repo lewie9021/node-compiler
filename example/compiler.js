@@ -9,4 +9,9 @@ var config = JSON.parse(FS.readFileSync(Path.join(__dirname, "config.json"), "ut
 config.directory = Path.join(__dirname, "MyProject");
 
 // Instantiate the Compiler.
-new Compiler(config, "dev");
+var compiler = new Compiler(config, "dev");
+
+compiler.on("compiled", function() { console.log("Compiled"); });
+compiler.on("changed", function() { console.log("Changed"); });
+
+compiler.compile();

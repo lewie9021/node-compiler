@@ -1,6 +1,8 @@
 var Logger = require("./Logger");
 var Profile = require("./Profile");
 
+var Events = require("events");
+var Util = require("util");
 var Path = require("path");
 var FS = require("fs");
 
@@ -42,8 +44,11 @@ function Compiler(config, mode, debug) {
     this.mode = config.modes.filter(function(m) { return m.id == mode; })[0];
     if (!this.mode) { return Logger.error("Failed to find the mode '" + mode + "'."); }
 
+    Events.EventEmitter.call(this);
     this.init(config);
 }
+
+Util.inherits(Compiler, Events.EventEmitter);
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: This method simply splits out some of the parsing logic from the main constructor. The cache
@@ -71,8 +76,15 @@ Compiler.prototype.init = function _init(config) {
         if (!profile) { return Logger.warn("Invalid profile ID specified '" + profileID + "'."); }
         this.profiles.push(new Profile(this, profile));
     }, this);
-
-    Logger.info("Compile complete.");
 };
+
+Compiler.prototype.compile = function _compile() {
+    this.profiles.forEach(function(profile) {
+        profile.compile(true);
+    });
+
+    this.emit("compiled");
+};
+
 
 module.exports = Compiler;

@@ -144,7 +144,7 @@ The configuration object above may seem daunting however, broken down, it's rath
 * JS
     * minify
     * paths
-* CoffeeScript
+* Coffee
     * header
     * bare
     * paths
@@ -153,10 +153,19 @@ The configuration object above may seem daunting however, broken down, it's rath
 
 * A GUI to make creating the configuration object much more user friendly.
 * Better logging implementation.
-* Make use of event emitters for on startup, files changes, and when compliations are finished.
+* Document how to use the command line interface.
 
 ### Changelog
 <dl>
+    <dt>v0.1.0</dt>
+    <dd>
+        <ul>
+            <li>Made use of event emitters for on compile and file changes (modify, create, delete).</li>
+            <li>Modified the way the compiler is instantiated due to the previous change. After instantiating the Compiler, you will need to call it's compile method to begin the process. This allows time for event handlers to be attached.</li>
+            <li>Fixed some typos within the README and within comments.</li>
+            <li>The example now includes the use of event emitters to log on 'compiled' and 'changed'.</li>
+        </ul>
+    </dd>
     <dt>v0.0.6</dt>
     <dd>
         <ul>

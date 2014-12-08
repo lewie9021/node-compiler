@@ -42,13 +42,16 @@ function Plugin(target, plugin) {
     * stat [object]   - The stat object of the created, changed or deleted file.
 \* ------------------------------------------------------------------------------------------------------------------ */
 Plugin.prototype.onMonitor = function _onMonitor(reason, path, stat) {
+    var profile = this.target.profile;
     var filePattern = this.filePattern;
+
     if (stat && stat.isDirectory()) { return; }
     if (filePattern && !filePattern.test(path)) { return; }
 
     Logger.info("File " + reason + ": " + path);
-    this.target.profile.compile();
-    Logger.info("Compile complete.");
+    
+    profile.compile();
+    compiler.emit("changed");
 };
 
 /* ------------------------------------------------------------------------------------------------------------------ *\

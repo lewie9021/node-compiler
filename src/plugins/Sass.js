@@ -49,7 +49,9 @@ Sass.prototype.constructor = Sass;
     * Only don't remove css files from cache. They wouldn't support the @import functionality.
 \* ------------------------------------------------------------------------------------------------------------------ */
 Sass.prototype.onMonitor = function _onMonitor(reason, path, stat) {
+    var profile = this.target.profile;
     var filePattern = this.filePattern;
+    
     if ((stat && stat.isDirectory()) || (filePattern && !filePattern.test(path))) { return; }
 
     Logger.info("File " + reason + ": " + path);
@@ -67,8 +69,8 @@ Sass.prototype.onMonitor = function _onMonitor(reason, path, stat) {
         }, this);
     }
 
-    this.target.profile.compile();
-    Logger.info("Compile complete.");
+    profile.compile();
+    compiler.emit("changed");
 };
 
 /* ------------------------------------------------------------------------------------------------------------------ *\

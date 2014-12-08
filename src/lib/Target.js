@@ -34,6 +34,7 @@ function Target(profile, target, id) {
     this.plugin = target.plugin;
     this.directory = Path.join(compiler.directory, target.directory);
     this.watch = (target.watch || false);
+    this.watching = false;
     this.ignore = (target.ignore || []);
     this.id = id;
 
@@ -66,8 +67,6 @@ Target.prototype.init = function _init() {
 
     var integrityPath = Helpers.getCachePath(this, this.directory, false, ".integrity");
     this.integrity = (FS.existsSync(integrityPath) ? FS.readFileSync(integrityPath, "utf-8").split("\r\n") : null);
-
-    if (this.watch) { this.watchDirectory(); }
 };
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
@@ -101,6 +100,7 @@ Target.prototype.watchDirectory = function _watchDirectory() {
         interval: 150
     });
 
+    this.watching = true;
     watcher.on("ready", function() {
         watcher.on("add", self.plugin.onMonitor.bind(self.plugin, "created"));
         watcher.on("change", self.plugin.onMonitor.bind(self.plugin, "changed"));
@@ -160,16 +160,16 @@ function diffIntegrity(a, b) {
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
-  * @description: This method is called either on startup or when a file is created, changed, or deleted.
+  * @description: This method is called either on manaul compile or when a file is created, changed, or deleted.
   * @parameters:
-    * startup [boolean] - This parameter is only true when the compiler is first launched otherwise it's falsy.
+    * manualCompile [boolean] - Only true when the compiler is manually compiled otherwise it's falsy.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Target.prototype.compile = function _compile(startup) {
+Target.prototype.compile = function _compile(manualCompile) {
     var files = Helpers.diveSync(this.directory, this.filter.bind(this));
     var newIntegrity = files.map(function(f) { return f.dir; });
     var diff = diffIntegrity(this.integrity, newIntegrity);
 
-    this.integrity = (startup ? (this.integrity || newIntegrity) : newIntegrity);
+    this.integrity = (manualCompile ? (this.integrity || newIntegrity) : newIntegrity);
 
     // If the integrity has changed, update it within cache.
     if (diff.changed) {
@@ -202,22 +202,24 @@ Target.prototype.compile = function _compile(startup) {
     }
 
     if (this.profile.concatenate) {
-        this.concatenate(files, startup, diff.changed);
+        this.concatenate(files, manualCompile, diff.changed);
     } else {
-        this.processFiles(files, startup);
+        this.processFiles(files, manualCompile);
     }
+
+    if (!this.watching && this.watch) { this.watchDirectory(); }
 };
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: Made use of by the compile and concatenate methods. This method is a hybrid that adapts it's output
                   functionality based on the presence of the appendPath parameter.
   * @parameters:
-    * files [array]       - An array passed in via the use of the diveSync helper.
-    * startup [boolean]   - This parameter is only true when the compiler is first launched otherwise it's falsy.
-    * appendPath [string] - An optional parameter that contains a path which the files will be appended to.
+    * files [array]           - An array passed in via the use of the diveSync helper.
+    * manualCompile [boolean] - Only true when the compiler is manually compiled otherwise it's falsy.
+    * appendPath [string]     - An optional parameter that contains a path which the files will be appended to.
   * @returns: If appendPath is present, a concatenated string of all the files passed otherwise an empty string.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Target.prototype.processFiles = function _processFiles(files, startup, appendPath) {
+Target.prototype.processFiles = function _processFiles(files, manualCompile, appendPath) {
     var data = "";
 
     if (appendPath && !FS.existsSync(appendPath)) {
@@ -227,7 +229,7 @@ Target.prototype.processFiles = function _processFiles(files, startup, appendPat
 
     for (var i = 0; i < files.length; i += 1) {
         var file = files[i];
-        var contents = this.plugin.compile(file.dir, FS.statSync(file.dir), startup);
+        var contents = this.plugin.compile(file.dir, FS.statSync(file.dir), manualCompile);
 
         if (contents && contents.length > 0) {
             if (appendPath) { 
@@ -252,15 +254,15 @@ Target.prototype.processFiles = function _processFiles(files, startup, appendPat
                   If there is at least a file with data within the target, the contents will be outputed.
   * @parameters:
     * files [array]             - An array passed in via the use of the diveSync helper.
-    * startup [boolean]         - Only true when the compiler is first launched otherwise falsy.
+    * manualCompile [boolean]   - Only true when the compiler is manually compiled otherwise it's falsy.
     * integrityChange [boolean] - If true, this over-rules the check to reconcatenate the target.
   * @todo:
     * This may get moved into the compile method as it's relatively short and used once.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Target.prototype.concatenate = function _concatenate(files, startup, integrityChange) {
+Target.prototype.concatenate = function _concatenate(files, manualCompile, integrityChange) {
     var cachePath = Helpers.getCachePath(this, this.directory);
     var compile = (integrityChange || checkCache(cachePath, files));
-    var contents = (compile ? this.processFiles(files, startup, cachePath) : FS.readFileSync(cachePath, "utf-8"));
+    var contents = (compile ? this.processFiles(files, manualCompile, cachePath) : FS.readFileSync(cachePath, "utf-8"));
 
     // If contents is empty this be due to an empty cache file or an error occuring during the processing of
     // files within the target directory.
