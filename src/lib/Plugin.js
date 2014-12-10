@@ -1,5 +1,4 @@
 var Helpers = require("../helpers");
-var Logger = require("./Logger");
 var Target = require("./Target");
 
 var Path = require("path");
@@ -29,7 +28,6 @@ function Plugin(target, plugin) {
     this.options = (plugin.options || {});
     this.cacheDirectory = Path.join(compiler.directory, ".cache");
 
-    Logger.set("debugging", compiler.debug);
     Logger.debug("Instantiating " + this.name + " plugin with the following options " + JSON.stringify(this.options) + ".");
 }
 
@@ -38,7 +36,7 @@ function Plugin(target, plugin) {
                   class to allow overwriting of how files are processed.
   * @parameters:
     * reason [string] - Used for rendering purposes and will have a value of either 'created', 'changed', or 'deleted'.
-    * path [string]   - The absolute path of the file that have been created, changed, or deleted.
+    * path [string]   - The absolute path of the file that has been created, changed, or deleted.
     * stat [object]   - The stat object of the created, changed or deleted file.
 \* ------------------------------------------------------------------------------------------------------------------ */
 Plugin.prototype.onMonitor = function _onMonitor(reason, path, stat) {
@@ -64,7 +62,7 @@ Plugin.prototype.onMonitor = function _onMonitor(reason, path, stat) {
   * @todo:
     * Revise this method, removing the attempt to parse annoying string errors from intergrations such as node-sass.
       It often incorrectly parses them truncating some of the message. Another solution would be to send a pull
-      request such intergrations to throw more standardised errors.
+      request to such intergrations to throw more standardised errors.
 \* ------------------------------------------------------------------------------------------------------------------ */
 Plugin.prototype.error = function _error(path, e) {
     Logger.error("Error compiling via " + this.name + " Plugin:");
@@ -82,6 +80,27 @@ Plugin.prototype.error = function _error(path, e) {
     if (FS.existsSync(outputPath) && !FS.statSync(outputPath).isDirectory()) {
         FS.unlinkSync(outputPath);
     }
+};
+
+/* ------------------------------------------------------------------------------------------------------------------ *\
+  * @description: This method is when a file is processed due to expired/non-existant cache entry. It will log the
+                  file and the output directory derived from it's profile.
+  * @parameters:
+    * path [string] - The absolute path of the file being processed.
+\* ------------------------------------------------------------------------------------------------------------------ */
+Plugin.prototype.log = function(path) {
+    var profile = this.target.profile;
+    var directory = profile.compiler.directory;
+    var output;
+
+    if (profile.concatenate) {
+        output = profile.output;
+    } else {
+        var relativePath = Path.relative(this.target.directory, file.dir);
+        output = Path.join(profile.output, relativePath);
+    }
+
+    Logger.process(this.name, Path.relative(directory, path), Path.relative(directory, output));
 };
 
 module.exports = Plugin;

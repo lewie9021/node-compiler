@@ -1,8 +1,8 @@
 var Helpers = require("../helpers");
-var Logger = require("../lib/Logger");
 var Plugin = require("../lib/Plugin");
 
 var UglifyJS = require("uglify-js");
+var Path = require("path");
 var FS = require("fs");
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
@@ -13,7 +13,6 @@ var FS = require("fs");
     * paths  - Include absolute paths of the compiled files within the output as comments.
   * @requires:
     * helpers   - Used for reading from and writing to cache.
-    * logger    - Required to centralise how data is logged both to console and disk.
     * plugin    - Used to inherit common methods among the plugins.
     * uglify-js - Used to minify the JavaScript if the minify option is specified.
     * fs        - Used to read the contents of the files that aren't within cache and don't require minifying.
@@ -22,9 +21,6 @@ var FS = require("fs");
 function JS() {
     this.filePattern = /\.js$/i;
     Plugin.apply(this, arguments);
-
-    var compiler = this.target.profile.compiler;
-    Logger.set("debugging", compiler.debug);
 }
 
 JS.prototype = Object.create(Plugin.prototype);
@@ -51,6 +47,7 @@ JS.prototype.compile = function _compile(path, stat, startup) {
             if (options.paths) { contents = (("// " + path + "\n") + contents); }
             Helpers.cache(this.target, path, contents);
             Logger.debug("[Cached] " + path);
+            this.log(path);
         } catch (e) {
             this.error(path, e);
             return null;

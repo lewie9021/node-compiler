@@ -1,5 +1,4 @@
 var Helpers = require("../helpers");
-var Logger = require("../lib/Logger");
 var Plugin = require("../lib/Plugin");
 
 var CoffeeScript = require("coffee-script");
@@ -14,7 +13,6 @@ var FS = require("fs");
     * paths  - Include absolute paths of the compiled files within the output as comments.
   * @requires:
     * helpers       - Used for reading from and writing to cache.
-    * logger        - Required to centralise how data is logged both to console and disk.
     * plugin        - Used to inherit common methods among the plugins.
     * coffee-script - Used to compile CoffeeScript into JavaScript.
     * fs            - Used to read the contents of the files that aren't within cache and don't require minifying.
@@ -23,9 +21,6 @@ var FS = require("fs");
 function Coffee() {
     this.filePattern = /\.coffee$/i;
     Plugin.apply(this, arguments);
-
-    var compiler = this.target.profile.compiler;
-    Logger.set("debugging", compiler.debug);
 }
 
 Coffee.prototype = Object.create(Plugin.prototype);
@@ -52,6 +47,7 @@ Coffee.prototype.compile = function _compile(path, stat, startup) {
             if (options.paths) { contents = (("// " + path + "\n") + contents); }
             Helpers.cache(this.target, path, contents);
             Logger.debug("[Cached] " + path);
+            this.log(path);
         } catch (e) {
             this.error(path, e);
             return null;

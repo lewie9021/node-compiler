@@ -1,4 +1,3 @@
-var Logger = require("./Logger");
 var Profile = require("./Profile");
 
 var Events = require("events");
@@ -36,7 +35,9 @@ var FS = require("fs");
 
 function Compiler(config, mode, debug) {
     this.debug = (debug || false);
-    Logger.set("debugging", this.debug);
+
+    // Call the Logger class and assign global scope.
+    Logger = new (require("./Logger"))(this.debug);
 
     // Load a configuration object from a JSON file or simply pass an object literal.
     config = (typeof config === "string") ? JSON.parse(FS.readFileSync(config, "utf-8")) : config;

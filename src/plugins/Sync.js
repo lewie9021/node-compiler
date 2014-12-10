@@ -1,14 +1,10 @@
 var Helpers = require("../helpers");
-var Logger = require("../lib/Logger");
 var Plugin = require("../lib/Plugin");
 
 var FS = require("fs");
 
 function Sync() {
     Plugin.apply(this, arguments);
-
-    var compiler = this.target.profile.compiler;
-    Logger.set("debugging", compiler.debug);
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
@@ -16,7 +12,6 @@ function Sync() {
                   directory. The filePattern property is not used as unlike other plugins, this isn't important.
   * @requires:
     * helpers - Used for reading from and writing to cache.
-    * logger  - Required to centralise how data is logged both to console and disk.
     * plugin  - Used to inherit common methods among the plugins.
     * fs      - Used to read the contents of the files that aren't within cache when compiling.
   * @todo:
@@ -47,6 +42,7 @@ Sync.prototype.compile = function _compile(path, stat, startup) {
         contents = FS.readFileSync(path);
         Helpers.cache(this.target, path, contents);
         Logger.debug("[Cached] " + path);
+        this.log(path);
     }
 
     return contents;

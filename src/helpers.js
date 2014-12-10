@@ -1,5 +1,3 @@
-var Logger = require("./lib/Logger");
-
 var Crypto = require("crypto");
 var Path = require("path");
 var FS = require("fs-extra");

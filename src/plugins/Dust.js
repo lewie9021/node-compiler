@@ -1,5 +1,4 @@
 var Helpers = require("../helpers");
-var Logger = require("../lib/Logger");
 var Plugin = require("../lib/Plugin");
 
 var DustJS = require("dustjs-linkedin");
@@ -15,7 +14,6 @@ var FS = require("fs-extra");
                      folderA will have the template name1 of 'folderA-test'.
   * @requires:
     * helpers         - Used for reading from and writing to cache.
-    * logger          - Required to centralise how data is logged both to console and disk.
     * plugin          - Used to inherit common methods among the plugins.
     * dustjs-linkedin - Used to compile the Dust templates into JavaScript.
     * path            - Required to calculate template names.
@@ -25,9 +23,6 @@ var FS = require("fs-extra");
 function Dust() {
     this.filePattern = /\.dust$/i;
     Plugin.apply(this, arguments);
-
-    var compiler = this.target.profile.compiler;
-    Logger.set("debugging", compiler.debug);
 }
 
 Dust.prototype = Object.create(Plugin.prototype);
@@ -58,6 +53,7 @@ Dust.prototype.compile = function _compile(path, stat, startup) {
             if (options.paths) { contents = (("// " + path + "\n") + contents); }
             Helpers.cache(this.target, path, contents);
             Logger.debug("[Cached] " + path);
+            this.log(path);
         } catch (e) {
             this.error(path, e);
             return null;

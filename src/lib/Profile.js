@@ -1,4 +1,3 @@
-var Logger = require("./Logger");
 var Target = require("./Target");
 
 var Path = require("path");
@@ -13,7 +12,6 @@ var FS = require("fs-extra")
     * compiler [object] - Reference to an instance of the compiler class.
     * profile [object]  - Pointer to a profile within the configuration object.
   * @requires:
-    * Logger:   - Required to centralise how data is logged both to console and disk.
     * Target:   - Used during the instantiation of the Profile when iterating through the configured targets.
     * path:     - Used to retrieve the directory portion of cache profiles and to determine the concatenation mode.
     * fs-extra: - Chosen over the standard fs module for mkdirsSync and used to remove old output files.
@@ -25,8 +23,6 @@ function Profile(compiler, profile) {
     this.name = profile.name;
     this.output = Path.join(compiler.directory, profile.output);
     this.concatenate = (Path.extname(this.output).length > 0);
-
-    Logger.set("debugging", this.compiler.debug);
 
     this.targets = profile.targets.map(function(target, id) {
         return new Target(this, target, id);

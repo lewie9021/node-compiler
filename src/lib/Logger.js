@@ -2,42 +2,45 @@ var Chalk = require("chalk");
 var Path = require("path");
 var FS = require("fs");
 
-function Logger() {}
-
-Logger.prototype.set = function(key, value) {
-    this[key] = value;
-};
-
-Logger.prototype.warn = function(text) {
-    log(Chalk.yellow, text);
-};
-
-Logger.prototype.silent = function(text) {
-    log(null, text, false);
+function Logger(debug) {
+    this.debugging = debug;
 }
 
-Logger.prototype.debug = function(text) {
-    log(Chalk.magenta, text, this.debugging);
+Logger.prototype.log = function(type, message, show) {
+    if (show != false) { 
+        console.log("%s %s: %s", type.color("[" + type.text + "]"), Chalk.green(getTime()), Chalk.white(message));
+    }
+
+    save("[" + type.text + "] " + getTime() + ": " + message);
 };
 
-Logger.prototype.info = function(text) {
-    log(Chalk.gray, text);
+Logger.prototype.process = function(plugin, from, to) {
+    console.log("%s %s: %s -> %s", Chalk.gray("[" + plugin + "]"), Chalk.green(getTime()), Chalk.white(from), Chalk.white(to));
+    save("[" + plugin + "] " + getTime() + ": " + from + " -> " + to);
+}
+
+Logger.prototype.info = function(message) {
+    var type = {color: Chalk.cyan, text: "INFO"};
+    this.log(type, message);
 };
 
-Logger.prototype.error = function(text) {
-    log(Chalk.red, text);
+Logger.prototype.silent = function(message) {
+    this.log({text: "SILENT"}, message, false);
 };
 
-Logger.prototype.success = function(text) {
-    log(Chalk.green, text);
+Logger.prototype.debug = function(message) {
+    var type = {color: Chalk.blue, text: "DEBUG"};
+    this.log(type, message, this.debugging);
 };
 
-function log(color, text, show) {
-    if (show != false) { console.log(color(text)); }
+Logger.prototype.error = function(message) {
+    var type = {color: Chalk.red, text: "ERROR"};
+    this.log(type, message);
+};
 
-    var logs = Path.join(__dirname, ".logs");
-    if (!FS.existsSync(logs)) { FS.mkdirSync(logs); }
-    FS.appendFileSync(Path.join(logs, getDate() + ".txt"), getTime() + " " + text + "\n");
+Logger.prototype.warn = function(message) {
+    var type = {color: Chalk.yellow, text: "WARN"};
+    this.log(type, message);
 };
 
 function getDate() {
@@ -62,4 +65,11 @@ function getTime() {
          + ((second > 9 ? "" : "0") + second);
 }
 
-module.exports = new Logger();
+function save(text) {
+    var logs = Path.join(__dirname, ".logs");
+    
+    if (!FS.existsSync(logs)) { FS.mkdirSync(logs); }
+    FS.appendFileSync(Path.join(logs, getDate() + ".txt"), text + "\r\n");
+}
+
+module.exports = Logger;

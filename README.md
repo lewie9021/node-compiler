@@ -158,11 +158,19 @@ The configuration object above may seem daunting however, broken down, it's rath
 ### Future Improvements
 
 * A GUI to make creating the configuration object much more user friendly.
-* Better logging implementation.
 * Document how to use the command line interface.
 
 ### Changelog
 <dl>
+    <dt>v0.1.1</dt>
+    <dd>
+        <ul>
+            <li>Remade the Logger module to display messages in a more standard format.</li>
+            <li>Globalised the Logger module.</li>
+            <li>Added a log method to the Plugin module to centralise how processed files are logged.</li>
+            <li>Removed the need to instantiate the Logger module for each class.</li>
+        </ul>
+    </dd>
     <dt>v0.1.0</dt>
     <dd>
         <ul>

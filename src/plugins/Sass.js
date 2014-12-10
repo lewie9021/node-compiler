@@ -1,5 +1,4 @@
 var Helpers = require("../helpers");
-var Logger = require("../lib/Logger");
 var Plugin = require("../lib/Plugin");
 
 var NodeSass = require("node-sass");
@@ -9,9 +8,6 @@ var FS = require("fs");
 function Sass() {
     this.filePattern = /\.(scss|css)$/i;
     Plugin.apply(this, arguments);
-
-    var compiler = this.target.profile.compiler;
-    Logger.set("debugging", compiler.debug);
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
@@ -24,7 +20,6 @@ function Sass() {
     * includePaths - A string or array for which @import'ed files are searched for.
   * @requires:
     * helpers   - Used for reading from and writing to cache.
-    * logger    - Required to centralise how data is logged both to console and disk.
     * plugin    - Used to inherit common methods among the plugins.
     * node-sass - Used to compile scss files to css.
     * path      - Used to parse base names and extensions of files.
@@ -106,6 +101,7 @@ Sass.prototype.compile = function _compile(path, stat, startup) {
             if (options.paths) { contents = (("/* " + path + " */\n") + contents); }
             Helpers.cache(this.target, path, contents);
             Logger.debug("[Cached] " + path);
+            this.log(path);
         } catch (e) {
             this.error(path, parseError(path, e));
             return null;

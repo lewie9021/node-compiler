@@ -1,5 +1,4 @@
 var Helpers = require("../helpers");
-var Logger = require("./Logger");
 
 var Chokidar = require("chokidar");
 var Path = require("path");
@@ -16,7 +15,6 @@ var FS = require("fs-extra");
     * id [integer]     - An index integer assigned during initial iteration of it's profile's targets.
   * @requires:
     * helpers  - Used to retrieve cache files and dive directories.
-    * logger   - Required to centralise how data is logged both to console and disk.
     * chokidar - Directory monitoring
     * path     - Used for a number of it's functions, particularly for joining paths.
     * fs-extra - Chosen over the standard fs module for mkdirsSync and used mainly for reading and writing of data.
@@ -37,8 +35,6 @@ function Target(profile, target, id) {
     this.watching = false;
     this.ignore = (target.ignore || []);
     this.id = id;
-
-    Logger.set("debugging", compiler.debug);
 
     this.init();
 }
