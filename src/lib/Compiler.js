@@ -28,9 +28,9 @@ var FS = require("fs");
     * fs      - Required if a path is given for the config parameter upon instantiation. It may also be used to
                 create the cache directory provided it doesn't already exist.
   * @todo:
-    * Ensure the directory path specifed in the configuration exists.
-    * When parsing the config from a file, check the path for existances before wrapping it within a try-catch.
-    * Validate the configuration more thoroughly to prevent no existant property errors.
+    * Validate the configuration more thoroughly to prevent non-existant property errors.
+    * Attach the instance of Logger to the Compiler class. All classes (Profile, Target, and Plugin) can then reference
+      the Compiler and attach a reference to their namespace for convience. This removes it from global namespace.
 \* ------------------------------------------------------------------------------------------------------------------ */
 
 function Compiler(config, mode, debug) {
@@ -40,10 +40,17 @@ function Compiler(config, mode, debug) {
     Logger = new (require("./Logger"))(this.debug);
 
     // Load a configuration object from a JSON file or simply pass an object literal.
-    config = (typeof config === "string") ? JSON.parse(FS.readFileSync(config, "utf-8")) : config;
+    if (typeof config === "string") {
+        if (!FS.existsSync(config)) { return Logger.error("Failed to find configuration file path."); }
+        try {
+            config = JSON.parse(FS.readFileSync(config, "utf-8"));
+        } catch(e) {
+            return Logger.error(e);
+        }
+    }
 
     this.mode = config.modes.filter(function(m) { return m.id == mode; })[0];
-    if (!this.mode) { return Logger.error("Failed to find the mode '" + mode + "'."); }
+    if (!this.mode) { return Logger.error("Failed to find the mode specified."); }
 
     Events.EventEmitter.call(this);
     this.init(config);
@@ -64,6 +71,10 @@ Compiler.prototype.init = function _init(config) {
 
     this.name = config.name;
     this.directory = config.directory;
+
+    if (!FS.existsSync(this.directory)) {
+        return Logger.error("Directory specified within the configuration object is invalid.");
+    }
 
     var cacheDirectory = Path.join(this.directory, ".cache");
     if (!FS.existsSync(cacheDirectory)) { 
@@ -86,6 +97,5 @@ Compiler.prototype.compile = function _compile() {
 
     this.emit("compiled");
 };
-
 
 module.exports = Compiler;
