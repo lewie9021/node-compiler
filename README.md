@@ -8,6 +8,26 @@ This project aims to make compiling single page application much easier. I found
 npm install node-compiler
 ```
 
+### Command Line Usage
+
+Running the compiler via CLI is relatively simple. First, install the package globally:
+
+```
+npm install -g node-compiler
+```
+
+This will give you direct access to node-compiler. Below are the currently supported commands:
+
+| Key | Description |
+| --- | ----------- |
+| config | This is the path to the configuration file. |
+| mode | This is the mode ID that is mapped to a mode within the configuration file. |
+| debug | If present, the compiler will run in debug mode printing to console  |
+
+```
+> node-compiler --config C:\Development\MyProject\config.json --mode dev
+```
+
 ### Quick Start
 
 ```javascript
@@ -158,7 +178,6 @@ The configuration object above may seem daunting however, broken down, it's rath
 ### Future Improvements
 
 * A GUI to make creating the configuration object much more user friendly.
-* Document how to use the command line interface.
 
 ### Changelog
 <dl>
