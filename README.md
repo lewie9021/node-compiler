@@ -178,6 +178,7 @@ The configuration object above may seem daunting however, broken down, it's rath
 ### Future Improvements
 
 * A GUI to make creating the configuration object much more user friendly.
+* Implement an universal object validator to ensure the configuration object is valid.
 
 ### Changelog
 <dl>
