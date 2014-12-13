@@ -1,4 +1,4 @@
-var Compiler = require("node-compiler");
+var Compiler = require(/*"node-compiler"*/"../src/lib/Compiler");
 var Path = require("path");
 var FS = require("fs");
 
