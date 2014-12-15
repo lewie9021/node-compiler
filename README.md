@@ -182,6 +182,13 @@ The configuration object above may seem daunting however, broken down, it's rath
 
 ### Changelog
 <dl>
+    <dt>v0.2.1</dt>
+    <dd>
+        <ul>
+            <li>Fixed a bug with the CLI interface. Due to the recent update to the compiler, specifically how it's instantiated, the CLI would simply setup the environment but didn't call the compile method.</li>
+            <li>Added an additional future improvement.</li>
+        </ul>
+    </dd>
     <dt>v0.2.0</dt>
     <dd>
         <ul>
