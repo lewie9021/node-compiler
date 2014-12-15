@@ -1,5 +1,6 @@
 var Helpers = require("../helpers");
 
+var Legitimize = require("legitimize");
 var Chokidar = require("chokidar");
 var Path = require("path");
 var FS = require("fs-extra");
@@ -14,10 +15,11 @@ var FS = require("fs-extra");
     * target [object]  - Pointer to a target within the configuration object.
     * id [integer]     - An index integer assigned during initial iteration of it's profile's targets.
   * @requires:
-    * helpers  - Used to retrieve cache files and dive directories.
-    * chokidar - Directory monitoring
-    * path     - Used for a number of it's functions, particularly for joining paths.
-    * fs-extra - Chosen over the standard fs module for mkdirsSync and used mainly for reading and writing of data.
+    * helpers    - Used to retrieve cache files and dive directories.
+    * legitimize - Used to validate a target object defined in the configuration object.
+    * chokidar   - Directory monitoring
+    * path       - Used for a number of it's functions, particularly for joining paths.
+    * fs-extra   - Chosen over the standard fs module for mkdirsSync and used mainly for reading and writing of data.
   * @todo:
     * Watch .order files for changes. When these are updated, and concat is true, a recompile of the profile is
       required to account for the new ordering.
@@ -26,6 +28,8 @@ var FS = require("fs-extra");
 \* ------------------------------------------------------------------------------------------------------------------ */
 
 function Target(profile, target, id) {
+    var invalid = this.validate(target);
+    if (invalid) { throw new Error(invalid); }
     var compiler = profile.compiler;
 
     this.profile = profile;
@@ -302,5 +306,26 @@ function checkCache(path, files) {
 
     return true;
 }
+
+Target.prototype.validate = new Legitimize({
+    directory: {
+        required: true,
+        type: "string",
+        error: "'directory' property of target in configuration object is required and must be a path."
+    },
+    watch: {
+        type: "boolean",
+        error: "'watch' property of target in configuration object must be a boolean."
+    },
+    plugin: {
+        required: true,
+        type: "object",
+        error: "'plugin' property of target in configuration object is required and must be an object."
+    },
+    ignore: {
+        type: "array",
+        error: "'ignore' property of target in configuration object must be an array."
+    }
+});
 
 module.exports = Target;

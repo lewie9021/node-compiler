@@ -178,10 +178,16 @@ The configuration object above may seem daunting however, broken down, it's rath
 ### Future Improvements
 
 * A GUI to make creating the configuration object much more user friendly.
-* Implement an universal object validator to ensure the configuration object is valid.
 
 ### Changelog
 <dl>
+    <dt>v0.2.0</dt>
+    <dd>
+        <ul>
+            <li>Added the legitimize module to help validate the configuration object.</li>
+            <li>Improved error handling. Fatal errors that occur will simply throw rather than trying to ignore them.</li>
+        </ul>
+    </dd>
     <dt>v0.1.1</dt>
     <dd>
         <ul>

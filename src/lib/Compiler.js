@@ -1,5 +1,6 @@
 var Profile = require("./Profile");
 
+var Legitimize = require("legitimize");
 var Events = require("events");
 var Util = require("util");
 var Path = require("path");
@@ -22,11 +23,13 @@ var FS = require("fs");
     * debug [boolean]:       - This optional parameter specifies if the compiler should be a debugging state. 
                                Currently this means debugging logs will show up in console.
   * @requires:
-    * Logger  - Required to centralise how data is logged both to console and disk.
-    * Profile - Used during the instantiation of the Compiler when iterating through the configured profiles.
-    * path    - Needed simply to build the cache directory path.
-    * fs      - Required if a path is given for the config parameter upon instantiation. It may also be used to
-                create the cache directory provided it doesn't already exist.
+    * Logger     - Required to centralise how data is logged both to console and disk.
+    * Profile    - Used during the instantiation of the Compiler when iterating through the configured profiles.
+    * legitimize - Used to validate the configuration object at the root level.
+    * util       - Required to allow inheritance of the EventEmitter class.
+    * path       - Needed simply to build the cache directory path.
+    * fs         - Required if a path is given for the config parameter upon instantiation. It may also be used to
+                   create the cache directory provided it doesn't already exist.
   * @todo:
     * Validate the configuration more thoroughly to prevent non-existant property errors.
     * Attach the instance of Logger to the Compiler class. All classes (Profile, Target, and Plugin) can then reference
@@ -41,19 +44,18 @@ function Compiler(config, mode, debug) {
 
     // Load a configuration object from a JSON file or simply pass an object literal.
     if (typeof config === "string") {
-        if (!FS.existsSync(config)) { return Logger.error("Failed to find configuration file path."); }
-        try {
-            config = JSON.parse(FS.readFileSync(config, "utf-8"));
-        } catch(e) {
-            return Logger.error(e);
+        if (!FS.existsSync(config)) {
+            throw new Error("Failed to find configuration file.");
         }
+
+        config = JSON.parse(FS.readFileSync(config, "utf-8"));
     }
 
-    this.mode = config.modes.filter(function(m) { return m.id == mode; })[0];
-    if (!this.mode) { return Logger.error("Failed to find the mode specified."); }
+    var invalid = this.validate(config);
+    if (invalid) { throw new Error(invalid); }
 
     Events.EventEmitter.call(this);
-    this.init(config);
+    this.init(config, mode);
 }
 
 Util.inherits(Compiler, Events.EventEmitter);
@@ -65,16 +67,16 @@ Util.inherits(Compiler, Events.EventEmitter);
     * config [object] - This parameter is passed in via the constructor and provides access to important properties
                         that either require referencing or further processing.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Compiler.prototype.init = function _init(config) {
+Compiler.prototype.init = function _init(config, mode) {
     Logger.silent("------------ Starting Compiler ------------");
+
+    this.mode = config.modes.filter(function(m) { return m.id == mode; })[0];
+    if (!this.mode) { throw new Error("Failed to find configuration mode."); }
+
     Logger.debug("Initialising " + this.mode.name + " mode...");
 
     this.name = config.name;
     this.directory = config.directory;
-
-    if (!FS.existsSync(this.directory)) {
-        return Logger.error("Directory specified within the configuration object is invalid.");
-    }
 
     var cacheDirectory = Path.join(this.directory, ".cache");
     if (!FS.existsSync(cacheDirectory)) { 
@@ -84,9 +86,15 @@ Compiler.prototype.init = function _init(config) {
 
     this.profiles = [];
     this.mode.profiles.forEach(function(profileID) {
-        var profile = config.profiles.filter(function(p) { return p.id == profileID; })[0];
-        if (!profile) { return Logger.warn("Invalid profile ID specified '" + profileID + "'."); }
-        this.profiles.push(new Profile(this, profile));
+        var found = config.profiles.filter(function(p) { return p.id == profileID; })[0];
+        if (!found) { return Logger.warn("Invalid profile ID specified '" + profileID + "'."); }
+        
+        try {
+            var profile = new Profile(this, found);
+            this.profiles.push(profile);
+        } catch (e) {
+            Logger.error(e);
+        }
     }, this);
 };
 
@@ -97,5 +105,24 @@ Compiler.prototype.compile = function _compile() {
 
     this.emit("compiled");
 };
+
+Compiler.prototype.validate = new Legitimize({
+    name: {
+        type: "string",
+        error: "'name' property in configuration object is required and must be a string."
+    },
+    directory: {
+        type: "path",
+        error: "'directory' property in configuration object is required and must be a valid path."
+    },
+    modes: {
+        type: "array",
+        error: "'modes' property in configuration object is required and must be an array."
+    },
+    profiles: {
+        type: "array",
+        error: "'profiles' property in configuration object is required and must be an array."
+    }
+}, {required: true});
 
 module.exports = Compiler;

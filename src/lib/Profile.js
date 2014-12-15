@@ -1,7 +1,8 @@
 var Target = require("./Target");
 
+var Legitimize = require("legitimize");
 var Path = require("path");
-var FS = require("fs-extra")
+var FS = require("fs-extra");
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: This class has authority over the compilation of files within its subsequent target directories. A
@@ -12,12 +13,17 @@ var FS = require("fs-extra")
     * compiler [object] - Reference to an instance of the compiler class.
     * profile [object]  - Pointer to a profile within the configuration object.
   * @requires:
-    * Target:   - Used during the instantiation of the Profile when iterating through the configured targets.
-    * path:     - Used to retrieve the directory portion of cache profiles and to determine the concatenation mode.
-    * fs-extra: - Chosen over the standard fs module for mkdirsSync and used to remove old output files.
+    * Target:    - Used during the instantiation of the Profile when iterating through the configured targets.
+    * legitimize - Used to validate a profile object defined in the configuration object.
+    * path:      - Used to retrieve the directory portion of cache profiles and to determine the concatenation mode.
+    * fs-extra:  - Chosen over the standard fs module for mkdirsSync and used to remove old output files.
+
 \* ------------------------------------------------------------------------------------------------------------------ */
 
 function Profile(compiler, profile) {
+    var invalid = this.validate(profile);
+    if (invalid) { throw new Error(invalid); }
+
     this.compiler = compiler;
     this.id = profile.id;
     this.name = profile.name;
@@ -48,5 +54,24 @@ Profile.prototype.compile = function _compile(manualCompile) {
     Logger.debug("Compiling Targets for Profile '" + this.name + "'.");
     this.targets.forEach(function(target) { target.compile(manualCompile); });
 };
+
+Profile.prototype.validate = new Legitimize({
+    id: {
+        type: "string",
+        error: "'id' property of profile in configuration object is required and must be a string."
+    },
+    name: {
+        type: "string",
+        error: "'name' property of profile in configuration object is required and must be a string."
+    },
+    output: {
+        type: "string",
+        error: "'output' property of profile in configuration object is required and must be a path."
+    },
+    targets: {
+        type: "array",
+        error: "'targets' property of profile in configuration object is required and must be an array."
+    }
+}, {required: true});
 
 module.exports = Profile;

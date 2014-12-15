@@ -1,6 +1,7 @@
 var Helpers = require("../helpers");
 var Target = require("./Target");
 
+var Legitimize = require("legitimize");
 var Path = require("path");
 var FS = require("fs");
 
@@ -12,15 +13,18 @@ var FS = require("fs");
     * target [object]  - Reference to an instance of a target class.
     * profile [object] - Pointer to a plugin within the configuration object.
   * @requires:
-    * helpers - Required for the deletion of the target cache and the file causing an error.
-    * logger  - Required to centralise how data is logged both to console and disk.
-    * path    - Used simply to build a reference to the cache directory.
-    * fs      - Used only to remove output files if an error occurs.
+    * helpers    - Required for the deletion of the target cache and the file causing an error.
+    * logger     - Required to centralise how data is logged both to console and disk.
+    * legitimize - Used to validate a plugin object defined in the configuration object.
+    * path       - Used simply to build a reference to the cache directory.
+    * fs         - Used only to remove output files if an error occurs.
   * @todo:
     * Remove the error parsing and simply show whatever message is given.
 \* ------------------------------------------------------------------------------------------------------------------ */
 
 function Plugin(target, plugin) {
+    var invalid = this.validate(plugin);
+    if (invalid) { throw new Error(invalid); }
     var compiler = target.profile.compiler;
 
     this.target = target;
@@ -102,5 +106,17 @@ Plugin.prototype.log = function(path) {
 
     Logger.process(this.name, Path.relative(directory, path), Path.relative(directory, output));
 };
+
+Plugin.prototype.validate = new Legitimize({
+    name: {
+        required: true,
+        type: "string",
+        error: "'name' property of plugin in configuration object is required and must be a supported plugin."
+    },
+    options: {
+        type: "object",
+        error: "'options' property of plugin in configuration object is must be an object."
+    }
+});
 
 module.exports = Plugin;

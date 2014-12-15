@@ -4,7 +4,7 @@
     "author": {
         "name": "Lewis Barnes"
     },
-    "version": "0.1.1",
+    "version": "0.2.0",
     "license": "MIT",
     "main": "./lib/Compiler.js",
     "repository": {
@@ -18,7 +18,8 @@
         "node-sass": "1.2.x",
         "uglify-js": "2.4.x",
         "chalk": "0.5.x",
-        "chokidar": "0.11.x"
+        "chokidar": "0.11.x",
+        "legitimize": "0.0.x"
     },
     "engines": {
         "node": "0.10.x"
