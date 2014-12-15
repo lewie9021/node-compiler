@@ -4,7 +4,7 @@
     "author": {
         "name": "Lewis Barnes"
     },
-    "version": "0.2.0",
+    "version": "0.2.1",
     "license": "MIT",
     "main": "./lib/Compiler.js",
     "repository": {
