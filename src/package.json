@@ -1,6 +1,20 @@
 {
     "name": "node-compiler",
     "description": "Single page application compiler that supports Dust, JS, Sass, CoffeeScript, and Sync.",
+    "keywords": [
+        "node",
+        "compiler",
+        "dustjs",
+        "sass",
+        "coffee-script",
+        "sync",
+        "web",
+        "minify",
+        "concatenate",
+        "build",
+        "watch",
+        "cli"
+    ],
     "author": {
         "name": "Lewis Barnes"
     },
@@ -13,13 +27,14 @@
     },
     "bin": "./bin/cli.js",
     "dependencies": {
-        "dustjs-linkedin": "2.5.x",
-        "fs-extra": "0.12.x",
-        "node-sass": "1.2.x",
-        "uglify-js": "2.4.x",
-        "chalk": "0.5.x",
-        "chokidar": "0.11.x",
-        "legitimize": "0.0.x"
+        "coffee-script": "~1.8.0",
+        "dustjs-linkedin": "~2.5.1",
+        "fs-extra": "~0.13.0",
+        "node-sass": "~1.2.3",
+        "uglify-js": "~2.4.16",
+        "chalk": "~0.5.1",
+        "chokidar": "~0.12.4",
+        "legitimize": "~0.0.3"
     },
     "engines": {
         "node": "0.10.x"

@@ -179,7 +179,7 @@ The configuration object above may seem daunting however, broken down, it's rath
 
 * A GUI to make creating the configuration object much more user friendly.
 * Create a GitHub wiki to describe how to use the compiler in more detail.
-* Intergrate Less.
+* Intergrate Less, Handlebars, and Jade.
 
 ### Changelog
 <dl>
