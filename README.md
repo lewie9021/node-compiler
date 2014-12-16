@@ -179,9 +179,16 @@ The configuration object above may seem daunting however, broken down, it's rath
 
 * A GUI to make creating the configuration object much more user friendly.
 * Create a GitHub wiki to describe how to use the compiler in more detail.
+* Intergrate Less.
 
 ### Changelog
 <dl>
+    <dt>v0.2.2</dt>
+    <dd>
+        <ul>
+            <li>Fixed a bug when emitting the 'changed' event.</li>
+        </ul>
+    </dd>
     <dt>v0.2.1</dt>
     <dd>
         <ul>

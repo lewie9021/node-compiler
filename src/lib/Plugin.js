@@ -53,7 +53,7 @@ Plugin.prototype.onMonitor = function _onMonitor(reason, path, stat) {
     Logger.info("File " + reason + ": " + path);
     
     profile.compile();
-    compiler.emit("changed");
+    profile.compiler.emit("changed");
 };
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
