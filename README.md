@@ -22,7 +22,7 @@ This will give you direct access to node-compiler. Below are the currently suppo
 | --- | ----------- |
 | config | This is the path to the configuration file. |
 | mode | This is the mode ID that is mapped to a mode within the configuration file. |
-| debug | If present, the compiler will run in debug mode printing to console  |
+| debug | If present, the compiler will run in debug mode printing to console. |
 
 ```
 > node-compiler --config C:\Development\MyProject\config.json --mode dev
@@ -180,6 +180,9 @@ The configuration object above may seem daunting however, broken down, it's rath
 * A GUI to make creating the configuration object much more user friendly.
 * Create a GitHub wiki to describe how to use the compiler in more detail.
 * Intergrate Less, Handlebars, and Jade.
+* Emit an error event when an intergration throws when processing a file.
+* Modify the info log when the monitor fires a chang event to render a path relative to the root directory.
+* Upon installation, run a script that queries the user of the intergrations they wish to use rather than installing them all.
 
 ### Changelog
 <dl>
