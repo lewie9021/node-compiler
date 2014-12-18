@@ -87,7 +87,7 @@ Plugin.prototype.error = function _error(path, e) {
 };
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
-  * @description: This method is when a file is processed due to expired/non-existant cache entry. It will log the
+  * @description: This method is used when a file is processed due to expired/non-existant cache entry. It will log the
                   file and the output directory derived from it's profile.
   * @parameters:
     * path [string] - The absolute path of the file being processed.
