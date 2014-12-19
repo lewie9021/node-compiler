@@ -89,12 +89,8 @@ Compiler.prototype.init = function _init(config, mode) {
         var found = config.profiles.filter(function(p) { return p.id == profileID; })[0];
         if (!found) { return Logger.warn("Invalid profile ID specified '" + profileID + "'."); }
         
-        try {
-            var profile = new Profile(this, found);
-            this.profiles.push(profile);
-        } catch (e) {
-            Logger.error(e);
-        }
+        var profile = new Profile(this, found);
+        this.profiles.push(profile);
     }, this);
 };
 

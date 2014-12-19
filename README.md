@@ -182,7 +182,9 @@ The configuration object above may seem daunting however, broken down, it's rath
 * Intergrate Less, Handlebars, and Jade.
 * Emit an error event when an intergration throws when processing a file.
 * Modify the info log when the monitor fires a chang event to render a path relative to the root directory.
-* Upon installation, run a script that queries the user of the intergrations they wish to use rather than installing them all.
+* Make intergrations optional rather than installing them all.
+* Make use of the 'commander' module for the command line interface.
+* Save log files in the directory specified in the configuration object's directory property.
 
 ### Changelog
 <dl>

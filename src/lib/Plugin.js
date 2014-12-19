@@ -100,7 +100,7 @@ Plugin.prototype.log = function(path) {
     if (profile.concatenate) {
         output = profile.output;
     } else {
-        var relativePath = Path.relative(this.target.directory, file.dir);
+        var relativePath = Path.relative(this.target.directory, path);
         output = Path.join(profile.output, relativePath);
     }
 
