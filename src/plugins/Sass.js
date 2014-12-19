@@ -65,7 +65,7 @@ Sass.prototype.onMonitor = function _onMonitor(reason, path, stat) {
     }
 
     profile.compile();
-    compiler.emit("changed");
+    profile.compiler.emit("changed");
 };
 
 /* ------------------------------------------------------------------------------------------------------------------ *\

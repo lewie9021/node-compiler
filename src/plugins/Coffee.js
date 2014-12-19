@@ -38,7 +38,7 @@ Coffee.prototype.constructor = Coffee;
 \* ------------------------------------------------------------------------------------------------------------------ */
 Coffee.prototype.compile = function _compile(path, stat, startup) {
     var cache = Helpers.getCache(this.target, path);
-    var contents = (cache || );
+    var contents = (cache || "");
     var options = this.options;
     
     if (!cache) {

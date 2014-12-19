@@ -189,6 +189,13 @@ The configuration object above may seem daunting however, broken down, it's rath
 ### Changelog
 
 <dl>
+    <dt>v0.2.4</dt>
+    <dd>
+        <ul>
+            <li>Fixed a bug with the Sass plugin that failed to reference the compiler.</li>
+            <li>Fixed a bug with the Coffee plugin that failed to compile due to a syntax error.</li>
+        </ul>
+    </dd>
     <dt>v0.2.3</dt>
     <dd>
         <ul>
