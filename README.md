@@ -187,7 +187,18 @@ The configuration object above may seem daunting however, broken down, it's rath
 * Save log files in the directory specified in the configuration object's directory property.
 
 ### Changelog
+
 <dl>
+    <dt>v0.2.3</dt>
+    <dd>
+        <ul>
+            <li>Added missing coffee-script to dependencies.</li>
+            <li>Modified all dependencies to have a more locked down version to prevent issues.</li>
+            <li>Fixed a bug when logging the output path when a profile is not in concatenation.</li>
+            <li>Removed instantiating profiles out of a try-catch block to prevent potential further errors from occurring.</li>
+            <li>Updated the README to include additional future improvements.</li>
+        </ul>
+    </dd>
     <dt>v0.2.2</dt>
     <dd>
         <ul>
@@ -247,4 +258,5 @@ The configuration object above may seem daunting however, broken down, it's rath
 </dl>
 
 ### Licence
+
 Copyright (c) 2014 Lewis Barnes. See LICENSE for details.
