@@ -1,10 +1,15 @@
 var Helpers = require("../helpers");
 var Plugin = require("../lib/Plugin");
 
+var Path = require("path")
 var FS = require("fs");
 
 function Sync() {
     Plugin.apply(this, arguments);
+
+    if (Path.extname(Path.basename(this.target.profile.output)).length > 0) {
+       throw new Error("Sync intergration requires an output path that is a folder.");
+    }
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
@@ -13,6 +18,7 @@ function Sync() {
   * @requires:
     * helpers - Used for reading from and writing to cache.
     * plugin  - Used to inherit common methods among the plugins.
+    * path    - Required to ensure it's profile output path is a folder.
     * fs      - Used to read the contents of the files that aren't within cache when compiling.
   * @todo:
     * Force concatination of the target to be false.
