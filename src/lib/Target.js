@@ -232,15 +232,21 @@ Target.prototype.processFiles = function _processFiles(files, manualCompile, app
         var contents = this.plugin.compile(file.dir, FS.statSync(file.dir), manualCompile);
 
         if (contents && contents.length > 0) {
-            if (appendPath) { 
+            if (appendPath) {
+                // Should try-catch this too?
                 FS.appendFileSync(appendPath, contents + "\n\n");
                 data += (contents + "\n\n");
             } else {
                 var relativePath = Path.relative(this.directory, file.dir);
                 var filePath = Path.join(this.profile.output, relativePath);
 
-                FS.mkdirsSync(Path.dirname(filePath));
-                FS.writeFileSync(filePath, contents);
+                try {
+                     FS.mkdirsSync(Path.dirname(filePath));
+                     FS.writeFileSync(filePath, contents);
+                } catch (e) {
+                    // This will most likely be a permission error.
+                    Logger.error(e.message);
+                }
             }
         }
     }
