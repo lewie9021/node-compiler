@@ -185,6 +185,8 @@ The configuration object above may seem daunting however, broken down, it's rath
 * Make intergrations optional rather than installing them all.
 * Make use of the 'commander' module for the command line interface.
 * Save log files in the directory specified in the configuration object's directory property.
+* Make a start on unit testing with Mocha and Chai.
+* Improve (standardise) error reporting.
 
 ### Changelog
 
@@ -192,7 +194,7 @@ The configuration object above may seem daunting however, broken down, it's rath
     <dt>v0.2.5</dt>
     <dd>
         <ul>
-            <li>Fixed a bug with some plugins when outputting in non-concatenation mode.  Their original extensions would simply mirror to the output directory.</li>
+            <li>Fixed a bug with some plugins when outputting in non-concatenation mode. Their original extensions would simply mirror to the output directory.</li>
         </ul>
     </dd>
     <dt>v0.2.4</dt>

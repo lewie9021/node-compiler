@@ -47,19 +47,18 @@ function Target(profile, target, id) {
   * @description: This method is used to ensure that the configuration object is valid by making basic checks to
                   prevent the Target from acting strangly and potentially throwing errors. If the checks pass, the
                   plugin will be instantiated and if set, the directory specified will be watched.
+  * @todo:
+    * Should call getInstalledPlugins once via the Compiler class. 
 \* ------------------------------------------------------------------------------------------------------------------ */
 Target.prototype.init = function _init() {
-    if (!this.plugin) {
-        return Logger.warn("Target plugin for profile '" + this.profile.name + "' ('" + this.directory + "') required.");
-    }
-
     if (!FS.existsSync(this.directory)) {
-        return Logger.warn("Target directory for profile '" + this.profile.name + "' ('" + this.directory + "') doesn't exist.");
+        throw new Error("Invalid target directory. '" + this.directory + "'.");
     }
 
+    // Should be called once when the compiler is instantiated.
     var plugins = this.getInstalledPlugins();
     if (plugins.indexOf(this.plugin.name.toLowerCase()) == -1) {
-        return Logger.warn("Target plugin for profile '" + this.profile.name + "' ('" + this.directory + "') is invalid.");
+        throw new Error("Invalid target plugin. '" + this.plugin.name + "'.");
     }
 
     var Module = require(Path.join(__dirname, "../plugins", this.plugin.name));
@@ -245,7 +244,7 @@ Target.prototype.processFiles = function _processFiles(files, manualCompile, app
                     var extensionIndex = extension ? filePath.lastIndexOf(extension) : (filePath.length - 1);
                     filePath = filePath.substring(0, extensionIndex) + this.plugin.outputExtension;
                 }
-                
+
                 try {
                      FS.mkdirsSync(Path.dirname(filePath));
                      FS.writeFileSync(filePath, contents);
