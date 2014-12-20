@@ -7,6 +7,7 @@ var FS = require("fs");
 
 function Sass() {
     this.filePattern = /\.(scss|css)$/i;
+    this.outputExtension = ".css";
     Plugin.apply(this, arguments);
 }
 

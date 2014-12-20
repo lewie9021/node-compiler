@@ -20,6 +20,7 @@ var FS = require("fs");
 
 function Coffee() {
     this.filePattern = /\.coffee$/i;
+    this.outputExtension = ".js";
     Plugin.apply(this, arguments);
 }
 

@@ -22,6 +22,7 @@ var FS = require("fs-extra");
 
 function Dust() {
     this.filePattern = /\.dust$/i;
+    this.outputExtension = ".js";
     Plugin.apply(this, arguments);
 }
 

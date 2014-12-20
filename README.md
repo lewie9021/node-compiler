@@ -189,6 +189,12 @@ The configuration object above may seem daunting however, broken down, it's rath
 ### Changelog
 
 <dl>
+    <dt>v0.2.5</dt>
+    <dd>
+        <ul>
+            <li>Fixed a bug with some plugins when outputting in non-concatenation mode.  Their original extensions would simply mirror to the output directory.</li>
+        </ul>
+    </dd>
     <dt>v0.2.4</dt>
     <dd>
         <ul>

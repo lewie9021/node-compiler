@@ -240,6 +240,12 @@ Target.prototype.processFiles = function _processFiles(files, manualCompile, app
                 var relativePath = Path.relative(this.directory, file.dir);
                 var filePath = Path.join(this.profile.output, relativePath);
 
+                if (this.plugin.outputExtension) {
+                    var extension = Path.extname(filePath);
+                    var extensionIndex = extension ? filePath.lastIndexOf(extension) : (filePath.length - 1);
+                    filePath = filePath.substring(0, extensionIndex) + this.plugin.outputExtension;
+                }
+                
                 try {
                      FS.mkdirsSync(Path.dirname(filePath));
                      FS.writeFileSync(filePath, contents);
