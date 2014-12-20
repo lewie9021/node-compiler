@@ -51,7 +51,7 @@ function Target(profile, target, id) {
     * Should call getInstalledPlugins once via the Compiler class. 
 \* ------------------------------------------------------------------------------------------------------------------ */
 Target.prototype.init = function _init() {
-    if (!FS.existsSync(this.directory)) {
+    if (!FS.existsSync(this.directory) || !FS.statSync(this.directory).isDirectory()) {
         throw new Error("Invalid target directory. '" + this.directory + "'.");
     }
 
