@@ -55,7 +55,10 @@ Target.prototype.init = function _init() {
         throw new Error("Invalid target directory. '" + this.directory + "'.");
     }
 
-    // Should be called once when the compiler is instantiated.
+    if (!this.plugin.name) {
+        throw new Error("Undefined target plugin within the '" + this.profile.name + "' profile.");
+    }
+
     var plugins = this.getInstalledPlugins();
     if (plugins.indexOf(this.plugin.name.toLowerCase()) == -1) {
         throw new Error("Invalid target plugin. '" + this.plugin.name + "'.");

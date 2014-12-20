@@ -191,6 +191,15 @@ The configuration object above may seem daunting however, broken down, it's rath
 ### Changelog
 
 <dl>
+    <dt>v0.2.6</dt>
+    <dd>
+        <ul>
+            <li>Fixed a bug caused by an undefined plugin name for a target.</li>
+            <li>Added validation for target directories. An error will be thrown if the directory is a file rather than a folder.</li>
+            <li>Fixed a bug with a configured target directory that doesn't exist causing further problems when attempting to watch/compile.</li>
+            <li>Added validation for the Sync plugin to ensure it's profile output path is a folder.</li>
+        </ul>
+    </dd>
     <dt>v0.2.5</dt>
     <dd>
         <ul>
