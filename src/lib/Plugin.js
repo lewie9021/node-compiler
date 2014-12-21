@@ -28,11 +28,12 @@ function Plugin(target, plugin) {
     var compiler = target.profile.compiler;
 
     this.target = target;
+    this.logger = target.logger;
     this.name = plugin.name;
     this.options = (plugin.options || {});
     this.cacheDirectory = Path.join(compiler.directory, ".cache");
 
-    Logger.debug("Instantiating " + this.name + " plugin with the following options " + JSON.stringify(this.options) + ".");
+    this.logger.debug("Instantiating " + this.name + " plugin with the following options " + JSON.stringify(this.options) + ".");
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ *\
@@ -50,7 +51,7 @@ Plugin.prototype.onMonitor = function _onMonitor(reason, path, stat) {
     if (stat && stat.isDirectory()) { return; }
     if (filePattern && !filePattern.test(path)) { return; }
 
-    Logger.info("File " + reason + ": " + path);
+    this.logger.info("File " + reason + ": " + path);
     
     profile.compile();
     profile.compiler.emit("changed");
@@ -69,12 +70,12 @@ Plugin.prototype.onMonitor = function _onMonitor(reason, path, stat) {
       request to such intergrations to throw more standardised errors.
 \* ------------------------------------------------------------------------------------------------------------------ */
 Plugin.prototype.error = function _error(path, e) {
-    Logger.error("Error compiling via " + this.name + " Plugin:");
-    Logger.error("- Message: " + e.message);
-    Logger.error("- File: " + path);
-    if (e.line) { Logger.error("- Line: " + e.line); }
-    if (e.col) { Logger.error("- Column: " + e.col); }
-    if (e.col) { Logger.error("- Position: " + e.pos); }
+    this.logger.error("Error compiling via " + this.name + " Plugin:");
+    this.logger.error("- Message: " + e.message);
+    this.logger.error("- File: " + path);
+    if (e.line) { this.logger.error("- Line: " + e.line); }
+    if (e.col) { this.logger.error("- Column: " + e.col); }
+    if (e.col) { this.logger.error("- Position: " + e.pos); }
 
     // Remove both file and target cache entries.
     Helpers.deleteCache(this.target, path);
@@ -100,11 +101,17 @@ Plugin.prototype.log = function(path) {
     if (profile.concatenate) {
         output = profile.output;
     } else {
+        if (this.outputExtension) {
+            var extension = Path.extname(path);
+            var extensionIndex = extension ? path.lastIndexOf(extension) : (path.length - 1);
+            path = path.substring(0, extensionIndex) + this.outputExtension;
+        }
+
         var relativePath = Path.relative(this.target.directory, path);
         output = Path.join(profile.output, relativePath);
     }
 
-    Logger.process(this.name, Path.relative(directory, path), Path.relative(directory, output));
+    this.logger.process(this.name, Path.relative(directory, path), Path.relative(directory, output));
 };
 
 Plugin.prototype.validate = new Legitimize({

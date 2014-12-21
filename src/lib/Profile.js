@@ -25,6 +25,7 @@ function Profile(compiler, profile) {
     if (invalid) { throw new Error(invalid); }
 
     this.compiler = compiler;
+    this.logger = compiler.logger;
     this.id = profile.id;
     this.name = profile.name;
     this.output = Path.join(compiler.directory, profile.output);
@@ -44,14 +45,14 @@ function Profile(compiler, profile) {
 Profile.prototype.compile = function _compile(manualCompile) {
     if (FS.existsSync(this.output)) {
         if (!FS.statSync(this.output).isDirectory()) {
-            Logger.debug("Removing old output file.");
+            this.logger.debug("Removing old output file.");
             FS.unlinkSync(this.output);
         }
     } else {
         FS.mkdirsSync(Path.dirname(this.output));
     }
 
-    Logger.debug("Compiling Targets for Profile '" + this.name + "'.");
+    this.logger.debug("Compiling Targets for Profile '" + this.name + "'.");
     this.targets.forEach(function(target) { target.compile(manualCompile); });
 };
 

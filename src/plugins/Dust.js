@@ -53,7 +53,7 @@ Dust.prototype.compile = function _compile(path, stat, startup) {
             contents = DustJS.compile(FS.readFileSync(path, "utf-8"), templateName);
             if (options.paths) { contents = (("// " + path + "\n") + contents); }
             Helpers.cache(this.target, path, contents);
-            Logger.debug("[Cached] " + path);
+            this.logger.debug("[Cached] " + path);
             this.log(path);
         } catch (e) {
             this.error(path, e);

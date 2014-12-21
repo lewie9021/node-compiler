@@ -1,4 +1,5 @@
 var Profile = require("./Profile");
+var Logger = require("./Logger");
 
 var Legitimize = require("legitimize");
 var Events = require("events");
@@ -30,17 +31,10 @@ var FS = require("fs");
     * path       - Needed simply to build the cache directory path.
     * fs         - Required if a path is given for the config parameter upon instantiation. It may also be used to
                    create the cache directory provided it doesn't already exist.
-  * @todo:
-    * Validate the configuration more thoroughly to prevent non-existant property errors.
-    * Attach the instance of Logger to the Compiler class. All classes (Profile, Target, and Plugin) can then reference
-      the Compiler and attach a reference to their namespace for convience. This removes it from global namespace.
 \* ------------------------------------------------------------------------------------------------------------------ */
 
 function Compiler(config, mode, debug) {
     this.debug = (debug || false);
-
-    // Call the Logger class and assign global scope.
-    Logger = new (require("./Logger"))(this.debug);
 
     // Load a configuration object from a JSON file or simply pass an object literal.
     if (typeof config === "string") {
@@ -68,7 +62,8 @@ Util.inherits(Compiler, Events.EventEmitter);
                         that either require referencing or further processing.
 \* ------------------------------------------------------------------------------------------------------------------ */
 Compiler.prototype.init = function _init(config, mode) {
-    Logger.silent("------------ Starting Compiler ------------");
+    this.logger = new Logger(this.debug, config.directory);
+    this.logger.silent("------------ Starting Compiler ------------");
 
     this.mode = config.modes.filter(function(m) { return m.id == mode; })[0];
     if (!this.mode) { throw new Error("Failed to find configuration mode."); }
@@ -76,21 +71,21 @@ Compiler.prototype.init = function _init(config, mode) {
     var invalid = this.validateMode(this.mode);
     if (invalid) { throw new Error(invalid); }
 
-    Logger.debug("Initialising " + this.mode.name + " mode...");
+    this.logger.debug("Initialising " + this.mode.name + " mode...");
 
     this.name = config.name;
     this.directory = config.directory;
 
     var cacheDirectory = Path.join(this.directory, ".cache");
     if (!FS.existsSync(cacheDirectory)) { 
-        Logger.debug("Cache directory doesn't exist, creating...");
+        this.logger.debug("Cache directory doesn't exist, creating...");
         FS.mkdirSync(cacheDirectory);
     }
 
     this.profiles = [];
     this.mode.profiles.forEach(function(profileID) {
         var found = config.profiles.filter(function(p) { return p.id == profileID; })[0];
-        if (!found) { return Logger.warn("Failed to find profile with ID '" + profileID + "'."); }
+        if (!found) { return this.logger.warn("Failed to find profile with ID '" + profileID + "'."); }
         
         var profile = new Profile(this, found);
         this.profiles.push(profile);

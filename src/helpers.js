@@ -19,7 +19,7 @@ function getCachePath(target, path, create, extension) {
 
 	var filename = JSON.stringify({dir: path, options: target.plugin.options});
     var cachePath = Path.join(profileCache, hash(filename) + (extension || ".cache"));
-    Logger.silent("Converted path '" + path + "' to '" + cachePath + "'.");
+    target.logger.silent("Converted path '" + path + "' to '" + cachePath + "'.");
 
 	return cachePath;
 };

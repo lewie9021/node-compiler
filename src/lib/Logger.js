@@ -2,8 +2,9 @@ var Chalk = require("chalk");
 var Path = require("path");
 var FS = require("fs");
 
-function Logger(debug) {
+function Logger(debug, directory) {
     this.debugging = debug;
+    this.directory = directory;
 }
 
 Logger.prototype.log = function(type, message, show) {
@@ -11,12 +12,12 @@ Logger.prototype.log = function(type, message, show) {
         console.log("%s %s: %s", type.color("[" + type.text + "]"), Chalk.green(getTime()), Chalk.white(message));
     }
 
-    save("[" + type.text + "] " + getTime() + ": " + message);
+    save.call(this, "[" + type.text + "] " + getTime() + ": " + message);
 };
 
 Logger.prototype.process = function(plugin, from, to) {
     console.log("%s %s: %s -> %s", Chalk.gray("[" + plugin + "]"), Chalk.green(getTime()), Chalk.white(from), Chalk.white(to));
-    save("[" + plugin + "] " + getTime() + ": " + from + " -> " + to);
+    save.call(this, "[" + plugin + "] " + getTime() + ": " + from + " -> " + to);
 }
 
 Logger.prototype.info = function(message) {
@@ -66,7 +67,7 @@ function getTime() {
 }
 
 function save(text) {
-    var logs = Path.join(__dirname, ".logs");
+    var logs = Path.join(this.directory, ".logs");
     
     if (!FS.existsSync(logs)) { FS.mkdirSync(logs); }
     FS.appendFileSync(Path.join(logs, getDate() + ".txt"), text + "\r\n");

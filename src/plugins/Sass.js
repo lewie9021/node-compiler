@@ -50,7 +50,7 @@ Sass.prototype.onMonitor = function _onMonitor(reason, path, stat) {
     
     if ((stat && stat.isDirectory()) || (filePattern && !filePattern.test(path))) { return; }
 
-    Logger.info("File " + reason + ": " + path);
+    this.logger.info("File " + reason + ": " + path);
 
     var filename = Path.basename(path);
     if (filename[0] == "_" && Path.extname(filename) == ".scss") {
@@ -101,7 +101,7 @@ Sass.prototype.compile = function _compile(path, stat, startup) {
 
             if (options.paths) { contents = (("/* " + path + " */\n") + contents); }
             Helpers.cache(this.target, path, contents);
-            Logger.debug("[Cached] " + path);
+            this.logger.debug("[Cached] " + path);
             this.log(path);
         } catch (e) {
             this.error(path, parseError(path, e));

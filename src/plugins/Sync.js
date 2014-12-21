@@ -47,7 +47,7 @@ Sync.prototype.compile = function _compile(path, stat, startup) {
     if (!cache) {
         contents = FS.readFileSync(path);
         Helpers.cache(this.target, path, contents);
-        Logger.debug("[Cached] " + path);
+        this.logger.debug("[Cached] " + path);
         this.log(path);
     }
 

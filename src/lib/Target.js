@@ -33,6 +33,7 @@ function Target(profile, target, id) {
     var compiler = profile.compiler;
 
     this.profile = profile;
+    this.logger = profile.logger;
     this.plugin = target.plugin;
     this.directory = Path.join(compiler.directory, target.directory);
     this.watch = (target.watch || false);
@@ -108,7 +109,7 @@ Target.prototype.watchDirectory = function _watchDirectory() {
         watcher.on("change", self.plugin.onMonitor.bind(self.plugin, "changed"));
         watcher.on("unlink", self.plugin.onMonitor.bind(self.plugin, "removed"));
 
-        Logger.debug("[Watching] " + self.directory);
+        self.logger.debug("[Watching] " + self.directory);
     });
 };
 
@@ -179,7 +180,7 @@ Target.prototype.compile = function _compile(manualCompile) {
 
         FS.mkdirsSync(Path.dirname(integrityPath));
         FS.writeFileSync(integrityPath, this.integrity.join("\r\n"));
-        Logger.debug("[Updated] integrity differences detected!");
+        this.logger.debug("[Updated] integrity differences detected!");
     }
 
     // Remove files from cache that have been deleted. If the profile isn't in concatenation mode, files will
@@ -190,14 +191,14 @@ Target.prototype.compile = function _compile(manualCompile) {
             var cachePath = Helpers.getCachePath(this, this.directory);
             if (FS.existsSync(cachePath)) {
                 FS.unlinkSync(cachePath);
-                Logger.debug("Removed " + path + " from cache.");
+                this.logger.debug("Removed " + path + " from cache.");
             }
 
             if (!this.profile.concatenate) {
                 var outputPath = Path.join(this.profile.output, Path.relative(this.directory, path));
                 if (FS.existsSync(outputPath)) {
                     FS.unlinkSync(outputPath);
-                    Logger.debug("Removed " + path + " from output.");
+                    this.logger.debug("Removed " + path + " from output.");
                 }
             }
         }, this);
@@ -253,7 +254,7 @@ Target.prototype.processFiles = function _processFiles(files, manualCompile, app
                      FS.writeFileSync(filePath, contents);
                 } catch (e) {
                     // This will most likely be a permission error.
-                    Logger.error(e.message);
+                    this.logger.error(e.message);
                 }
             }
         }
@@ -275,14 +276,14 @@ Target.prototype.processFiles = function _processFiles(files, manualCompile, app
 \* ------------------------------------------------------------------------------------------------------------------ */
 Target.prototype.concatenate = function _concatenate(files, manualCompile, integrityChange) {
     var cachePath = Helpers.getCachePath(this, this.directory);
-    var compile = (integrityChange || checkCache(cachePath, files));
+    var compile = (integrityChange || checkCache.call(this, cachePath, files));
     var contents = (compile ? this.processFiles(files, manualCompile, cachePath) : FS.readFileSync(cachePath, "utf-8"));
 
     // If contents is empty this be due to an empty cache file or an error occuring during the processing of
     // files within the target directory.
     if (contents.length < 1) { return; }
 
-    Logger.debug("Appending target to output " + this.profile.output);
+    this.logger.debug("Appending target to output " + this.profile.output);
     FS.appendFileSync(this.profile.output, contents);
 };
 
@@ -298,7 +299,7 @@ Target.prototype.concatenate = function _concatenate(files, manualCompile, integ
 \* ------------------------------------------------------------------------------------------------------------------ */
 function checkCache(path, files) {
     if (FS.existsSync(path)) {
-        Logger.debug("Target cache file found.");
+        this.logger.debug("Target cache file found.");
         var cacheModified = FS.statSync(path).mtime.getTime();
         var mostRecent = 0;
 
@@ -307,14 +308,14 @@ function checkCache(path, files) {
         });
 
         if (cacheModified >= mostRecent) {
-            Logger.debug("Target cache file is fresh.");
+            this.logger.debug("Target cache file is fresh.");
             return false;
         }
 
-        Logger.debug("Target requires a re-compile.");
+        this.logger.debug("Target requires a re-compile.");
         FS.unlinkSync(path);
     } else {
-        Logger.debug("Target cache file not found.");
+        this.logger.debug("Target cache file not found.");
         FS.mkdirsSync(Path.dirname(path));
     }
 
