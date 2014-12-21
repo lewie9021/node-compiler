@@ -51,7 +51,7 @@ function Compiler(config, mode, debug) {
         config = JSON.parse(FS.readFileSync(config, "utf-8"));
     }
 
-    var invalid = this.validate(config);
+    var invalid = this.validateCompiler(config);
     if (invalid) { throw new Error(invalid); }
 
     Events.EventEmitter.call(this);
@@ -73,6 +73,9 @@ Compiler.prototype.init = function _init(config, mode) {
     this.mode = config.modes.filter(function(m) { return m.id == mode; })[0];
     if (!this.mode) { throw new Error("Failed to find configuration mode."); }
 
+    var invalid = this.validateMode(this.mode);
+    if (invalid) { throw new Error(invalid); }
+
     Logger.debug("Initialising " + this.mode.name + " mode...");
 
     this.name = config.name;
@@ -87,7 +90,7 @@ Compiler.prototype.init = function _init(config, mode) {
     this.profiles = [];
     this.mode.profiles.forEach(function(profileID) {
         var found = config.profiles.filter(function(p) { return p.id == profileID; })[0];
-        if (!found) { return Logger.warn("Invalid profile ID specified '" + profileID + "'."); }
+        if (!found) { return Logger.warn("Failed to find profile with ID '" + profileID + "'."); }
         
         var profile = new Profile(this, found);
         this.profiles.push(profile);
@@ -102,7 +105,7 @@ Compiler.prototype.compile = function _compile() {
     this.emit("compiled");
 };
 
-Compiler.prototype.validate = new Legitimize({
+Compiler.prototype.validateCompiler = new Legitimize({
     name: {
         type: "string",
         error: "'name' property in configuration object is required and must be a string."
@@ -118,6 +121,21 @@ Compiler.prototype.validate = new Legitimize({
     profiles: {
         type: "array",
         error: "'profiles' property in configuration object is required and must be an array."
+    }
+}, {required: true});
+
+Compiler.prototype.validateMode = new Legitimize({
+    id: {
+        type: "string",
+        error: "'directory' property in mode is required and must be a valid path."
+    },
+    name: {
+        type: "string",
+        error: "'name' property in mode is required and must be a string."
+    },
+    profiles: {
+        type: "array",
+        error: "'profiles' property in mode is required and must be an array."
     }
 }, {required: true});
 

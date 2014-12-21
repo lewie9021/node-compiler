@@ -183,14 +183,20 @@ The configuration object above may seem daunting however, broken down, it's rath
 * Emit an error event when an intergration throws when processing a file.
 * Modify the info log when the monitor fires a chang event to render a path relative to the root directory.
 * Make intergrations optional rather than installing them all.
-* Make use of the 'commander' module for the command line interface.
 * Save log files in the directory specified in the configuration object's directory property.
-* Make a start on unit testing with Mocha and Chai.
+* Make a start on unit testing with Mocha, Chai, and Sinon.
 * Improve (standardise) error reporting.
 
 ### Changelog
 
 <dl>
+    <dt>v0.2.7</dt>
+    <dd>
+        <ul>
+            <li>Revised the command line interface to now use the 'commander' module.</li>
+            <li>Added validation for the selected mode.</li>
+        </ul>
+    </dd>
     <dt>v0.2.6</dt>
     <dd>
         <ul>
