@@ -181,9 +181,8 @@ The configuration object above may seem daunting however, broken down, it's rath
 * Create a GitHub wiki to describe how to use the compiler in more detail.
 * Intergrate Less, Handlebars, and Jade.
 * Emit an error event when an intergration throws when processing a file.
-* Modify the info log when the monitor fires a chang event to render a path relative to the root directory.
+* Modify the info log when the monitor fires a change event to render a path relative to the root directory.
 * Make intergrations optional rather than installing them all.
-* Save log files in the directory specified in the configuration object's directory property.
 * Make a start on unit testing with Mocha, Chai, and Sinon.
 * Improve (standardise) error reporting.
 
