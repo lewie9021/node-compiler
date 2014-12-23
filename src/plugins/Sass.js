@@ -42,7 +42,7 @@ Sass.prototype.constructor = Sass;
     * path [string]   - The absolute path of the file that have been created, changed, or deleted.
     * stat [object]   - The stat object of the created, changed or deleted file.
   * @todo:
-    * Only don't remove css files from cache. They wouldn't support the @import functionality.
+    * Don't remove css files from cache. They wouldn't support the @import functionality.
 \* ------------------------------------------------------------------------------------------------------------------ */
 Sass.prototype.onMonitor = function _onMonitor(reason, path, stat) {
     var profile = this.target.profile;
@@ -50,7 +50,7 @@ Sass.prototype.onMonitor = function _onMonitor(reason, path, stat) {
     
     if ((stat && stat.isDirectory()) || (filePattern && !filePattern.test(path))) { return; }
 
-    this.logger.info("File " + reason + ": " + path);
+    this.logger.info("File " + reason + ": " + Path.relative(profile.compiler.directory, path));
 
     var filename = Path.basename(path);
     if (filename[0] == "_" && Path.extname(filename) == ".scss") {

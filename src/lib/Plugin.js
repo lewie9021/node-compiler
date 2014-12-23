@@ -51,7 +51,7 @@ Plugin.prototype.onMonitor = function _onMonitor(reason, path, stat) {
     if (stat && stat.isDirectory()) { return; }
     if (filePattern && !filePattern.test(path)) { return; }
 
-    this.logger.info("File " + reason + ": " + path);
+    this.logger.info("File " + reason + ": " + Path.relative(profile.compiler.directory, path));
     
     profile.compile();
     profile.compiler.emit("changed");
