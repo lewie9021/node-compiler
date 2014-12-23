@@ -70,6 +70,8 @@ Plugin.prototype.onMonitor = function _onMonitor(reason, path, stat) {
       request to such intergrations to throw more standardised errors.
 \* ------------------------------------------------------------------------------------------------------------------ */
 Plugin.prototype.error = function _error(path, e) {
+    this.target.profile.compiler.emit("error", e);
+    
     this.logger.error("Error compiling via " + this.name + " Plugin:");
     this.logger.error("- Message: " + e.message);
     this.logger.error("- File: " + path);
