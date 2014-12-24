@@ -62,22 +62,16 @@ Plugin.prototype.onMonitor = function _onMonitor(reason, path, stat) {
                   are rendered on screen. This can of course be overwritten for more bespoke plugins. The file and
                   target are removed from cache to trigger a recompile on next compile.
   * @parameters:
-    * path [string]    - The absolute path of the file that has triggered the error.
-    * e [error|string] - Will likely be an instance of Error but some intergrations will annoyingly return a string.
-  * @todo:
-    * Revise this method, removing the attempt to parse annoying string errors from intergrations such as node-sass.
-      It often incorrectly parses them truncating some of the message. Another solution would be to send a pull
-      request to such intergrations to throw more standardised errors.
+    * path [string]      - The absolute path of the file that has triggered the error.
+    * err [error|string] - Will likely be an instance of Error but some intergrations will annoyingly return a string.
 \* ------------------------------------------------------------------------------------------------------------------ */
-Plugin.prototype.error = function _error(path, e) {
-    this.target.profile.compiler.emit("error", e);
+Plugin.prototype.error = function _error(path, err) {
+    var compiler = this.target.profile.compiler;
+    compiler.emit("error", err);
     
     this.logger.error("Error compiling via " + this.name + " Plugin:");
-    this.logger.error("- Message: " + e.message);
     this.logger.error("- File: " + path);
-    if (e.line) { this.logger.error("- Line: " + e.line); }
-    if (e.col) { this.logger.error("- Column: " + e.col); }
-    if (e.col) { this.logger.error("- Position: " + e.pos); }
+    this.logger.error("- Message: " + (err.message || err));
 
     // Remove both file and target cache entries.
     Helpers.deleteCache(this.target, path);
@@ -98,6 +92,7 @@ Plugin.prototype.error = function _error(path, e) {
 Plugin.prototype.log = function(path) {
     var profile = this.target.profile;
     var directory = profile.compiler.directory;
+    var inputPath = Path.relative(directory, path);
     var output;
 
     if (profile.concatenate) {
@@ -113,7 +108,7 @@ Plugin.prototype.log = function(path) {
         output = Path.join(profile.output, relativePath);
     }
 
-    this.logger.process(this.name, Path.relative(directory, path), Path.relative(directory, output));
+    this.logger.process(this.name, inputPath, Path.relative(directory, output));
 };
 
 Plugin.prototype.validate = new Legitimize({

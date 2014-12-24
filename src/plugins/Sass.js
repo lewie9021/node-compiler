@@ -104,23 +104,12 @@ Sass.prototype.compile = function _compile(path, stat, startup) {
             this.logger.debug("[Cached] " + path);
             this.log(path);
         } catch (e) {
-            this.error(path, parseError(path, e));
+            this.error(path, e);
             return null;
         }
     }
 
     return contents;
-};
-
-function parseError(path, e) {
-    var error = e.replace(path.replace(/\\/g, "/"), "").split(/\r?\n/);
-    var line = error[0].split(" ")[0].replace(/\:/g, "");
-    var message = error[0].substr(line.length + 3)
-
-    return {
-        message: message,
-        line: line
-    };
 };
 
 module.exports = Sass;
