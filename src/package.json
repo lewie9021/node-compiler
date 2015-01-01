@@ -1,10 +1,11 @@
 {
   "name": "node-compiler",
-  "description": "Single page application compiler that supports Dust, JS, Sass, CoffeeScript, and Sync.",
+  "description": "Single page application compiler that supports Dust, JS, Jade, Sass, CoffeeScript, and Sync.",
   "keywords": [
     "node",
     "compiler",
     "dustjs",
+    "jade",
     "sass",
     "coffee-script",
     "sync",
