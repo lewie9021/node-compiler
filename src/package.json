@@ -33,6 +33,7 @@
     "commander": "~2.5.1",
     "dustjs-linkedin": "~2.5.1",
     "fs-extra": "~0.13.0",
+    "jade": "~1.8.2",
     "legitimize": "~0.0.3",
     "node-sass": "~1.2.3",
     "uglify-js": "~2.4.16"
