@@ -19,7 +19,7 @@
   "author": {
     "name": "Lewis Barnes"
   },
-  "version": "0.4.0",
+  "version": "0.4.1",
   "license": "MIT",
   "main": "./lib/Compiler.js",
   "repository": {
@@ -36,6 +36,7 @@
     "fs-extra": "~0.13.0",
     "jade": "~1.8.2",
     "legitimize": "~0.0.3",
+    "less": "~2.1.2",
     "node-sass": "~1.2.3",
     "uglify-js": "~2.4.16"
   },
