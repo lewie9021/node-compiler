@@ -1,11 +1,12 @@
 {
   "name": "node-compiler",
-  "description": "Single page application compiler that supports Dust, JS, Jade, Sass, CoffeeScript, and Sync.",
+  "description": "Single page application compiler that supports a number of popular integrations.",
   "keywords": [
     "node",
     "compiler",
     "dustjs",
     "jade",
+    "less",
     "sass",
     "coffee-script",
     "sync",
@@ -19,7 +20,7 @@
   "author": {
     "name": "Lewis Barnes"
   },
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "MIT",
   "main": "./lib/Compiler.js",
   "repository": {
