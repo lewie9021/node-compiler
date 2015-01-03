@@ -1,6 +1,6 @@
 # Node Compiler
 
-Node Compiler is a flexible single page application compiler that supports a number of integrations. I found it difficult to find a module that supports the integrations I need and therefore decided I would create my own. Using JavaScript Object Notation, users can easily configure how the compiler behaves. There are future plans to implement a graphical interface to aid the creation of the configuration object. Suggestions for other intergrations are more than welcome!
+Node Compiler is a flexible single page application compiler that supports a number of integrations. I found it difficult to find a module that supports the integrations I need and therefore decided I would create my own. Using JavaScript Object Notation, users can easily configure how the compiler behaves. There are future plans to implement a graphical interface to aid the creation of the configuration object. Suggestions for other integrations are more than welcome!
 
 ---
 
