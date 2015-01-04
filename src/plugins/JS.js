@@ -26,6 +26,9 @@ function JS() {
 JS.prototype = Object.create(Plugin.prototype);
 JS.prototype.constructor = JS;
 
+JS.title = "JavaScript";
+JS.dependency = "uglify-js@2.4.16";
+
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: This method first checks the cache for the particular file. If it's not fresh or found, the file 
                   will either be minified or read directly from the file before adding to cache. 

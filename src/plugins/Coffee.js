@@ -27,6 +27,9 @@ function Coffee() {
 Coffee.prototype = Object.create(Plugin.prototype);
 Coffee.prototype.constructor = Coffee;
 
+Coffee.title = "CoffeeScript";
+Coffee.dependency = "coffee-script@1.8.0";
+
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: This method first checks the cache for the particular file. If it's not fresh or found, the file 
                   will be compiled before adding to cache. 

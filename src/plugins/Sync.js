@@ -30,6 +30,8 @@ function Sync() {
 Sync.prototype = Object.create(Plugin.prototype);
 Sync.prototype.constructor = Sync;
 
+Sync.title = "Sync";
+
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: This method simply checks in cache for the file in question. If this isn't the case the contents of
                   the file is read and created in cache.

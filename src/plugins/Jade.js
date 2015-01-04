@@ -29,6 +29,9 @@ function Jade() {
 Jade.prototype = Object.create(Plugin.prototype);
 Jade.prototype.constructor = Jade;
 
+Jade.title = "Jade";
+Jade.dependency = "jade@1.8.2";
+
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: This method first checks the cache for the particular file. If it's not fresh or found, the file
                   will be compiled using the jade module and saved in cache. This process is wrapped in a try-catch to

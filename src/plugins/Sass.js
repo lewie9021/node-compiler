@@ -32,6 +32,9 @@ function Sass() {
 Sass.prototype = Object.create(Plugin.prototype);
 Sass.prototype.constructor = Sass;
 
+Sass.title = "Sass";
+Sass.dependency = "node-sass@1.2.3";
+
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: This method is called when a file is either created, changed, or deleted. Unlike the generic 
                   behaviour of this method found in the Plugin class, this overwrite will run through the files within

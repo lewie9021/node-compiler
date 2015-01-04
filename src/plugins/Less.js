@@ -32,6 +32,9 @@ function Less() {
 Less.prototype = Object.create(Plugin.prototype);
 Less.prototype.constructor = Less;
 
+Less.title = "Less";
+Less.dependency = "less@2.1.2";
+
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: This method is called when a file is either created, changed, or deleted. Unlike the generic 
                   behaviour of this method found in the Plugin class, this overwrite will run through the files within

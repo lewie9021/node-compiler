@@ -29,6 +29,9 @@ function Dust() {
 Dust.prototype = Object.create(Plugin.prototype);
 Dust.prototype.constructor = Dust;
 
+Dust.title = "DustJS (LinkedIn)";
+Dust.dependency = "dustjs-linkedin@2.5.1";
+
 /* ------------------------------------------------------------------------------------------------------------------ *\
   * @description: This method first checks the cache for the particular file. If it's not fresh or found, the file
                   will be compiled using the dustjs-linkedin module and saved in cache. This process is wrapped in a 
