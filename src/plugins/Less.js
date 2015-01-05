@@ -1,7 +1,7 @@
 var Helpers = require("../helpers");
 var Plugin = require("../lib/Plugin");
 
-var LessJS = require("less");
+try { var LessJS = require("less"); } catch(e) {}
 var Path = require("path");
 var FS = require("fs");
 

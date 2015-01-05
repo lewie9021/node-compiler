@@ -1,7 +1,7 @@
 var Helpers = require("../helpers");
 var Plugin = require("../lib/Plugin");
 
-var NodeSass = require("node-sass");
+try { var NodeSass = require("node-sass"); } catch(e) {}
 var Path = require("path");
 var FS = require("fs");
 

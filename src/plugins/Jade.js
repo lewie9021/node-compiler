@@ -1,7 +1,7 @@
 var Helpers = require("../helpers");
 var Plugin = require("../lib/Plugin");
 
-var JadeJS = require("jade");
+try { var JadeJS = require("jade"); } catch(e) {}
 var Path = require("path");
 var FS = require("fs-extra");
 

@@ -1,7 +1,7 @@
 var Helpers = require("../helpers");
 var Plugin = require("../lib/Plugin");
 
-var CoffeeScript = require("coffee-script");
+try { var CoffeeScript = require("coffee-script"); } catch(e) {}
 var FS = require("fs");
 
 /* ------------------------------------------------------------------------------------------------------------------ *\

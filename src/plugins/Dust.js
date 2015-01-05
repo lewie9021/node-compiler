@@ -1,7 +1,7 @@
 var Helpers = require("../helpers");
 var Plugin = require("../lib/Plugin");
 
-var DustJS = require("dustjs-linkedin");
+try { var DustJS = require("dustjs-linkedin"); } catch(e) {}
 var Path = require("path");
 var FS = require("fs-extra");
 

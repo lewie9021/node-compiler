@@ -20,9 +20,12 @@
   "author": {
     "name": "Lewis Barnes"
   },
-  "version": "0.4.2",
+  "version": "0.5.0",
   "license": "MIT",
   "main": "./lib/Compiler.js",
+  "scripts": {
+    "install": "node scripts/install.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/lewie9021/node-compiler"
@@ -31,15 +34,9 @@
   "dependencies": {
     "chalk": "~0.5.1",
     "chokidar": "~0.12.4",
-    "coffee-script": "~1.8.0",
     "commander": "~2.5.1",
-    "dustjs-linkedin": "~2.5.1",
     "fs-extra": "~0.13.0",
-    "jade": "~1.8.2",
-    "legitimize": "~0.0.3",
-    "less": "~2.1.2",
-    "node-sass": "~1.2.3",
-    "uglify-js": "~2.4.16"
+    "legitimize": "~0.0.3"
   },
   "engines": {
     "node": "0.10.x"

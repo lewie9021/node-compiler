@@ -1,7 +1,7 @@
 var Helpers = require("../helpers");
 var Plugin = require("../lib/Plugin");
 
-var UglifyJS = require("uglify-js");
+try { var UglifyJS = require("uglify-js"); } catch(e) {}
 var Path = require("path");
 var FS = require("fs");
 
