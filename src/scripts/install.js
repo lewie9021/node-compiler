@@ -80,6 +80,12 @@ IntegrationManger.prototype.onKeyPress = function(s, key) {
 
 IntegrationManger.prototype.onLine = function(input) {
     if (!input) { return this.interface.close(); }
+    
+    for (var i = 0; i < this.integrations.length; i += 1) {
+        if (this.integrations[i].title.toLowerCase() == input.toLowerCase()) {
+            return console.log("Already selected");
+        }
+    }
 
     var found = false;
     for (var i = 0; i < this.supported.length; i += 1) {
